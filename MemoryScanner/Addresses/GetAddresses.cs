@@ -7,7 +7,7 @@ using System.Diagnostics;
 
 namespace MemoryScanner.Addresses
 {
-    class GetAddresses
+   public class GetAddresses
     {
         public enum AddressType
         {
@@ -16,7 +16,8 @@ namespace MemoryScanner.Addresses
             Map = 2,
             Player = 3,
             Container=4,
-            None =5,
+            Packet = 5,
+            None =6,
         }
         public virtual AddressType AddressCategory
         {
@@ -25,13 +26,25 @@ namespace MemoryScanner.Addresses
                 return AddressType.None; 
             }
         }
+        public virtual int Address
+        {
+            get
+            {
+                return 0;
+            }
+            set
+            {
+                value = 0;
+            }
+        }
+
         public virtual bool CheckAddress()
         {
             return true;
         }
-        public virtual int GetAddress()
+        public virtual void Search()
         {
-            return 0;
+            return ;
         }
         public virtual string GetString()
         {

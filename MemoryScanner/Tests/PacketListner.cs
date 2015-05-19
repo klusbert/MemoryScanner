@@ -31,7 +31,7 @@ namespace MemoryScanner.Tests
         {
             CodeCaveHelper cv = new CodeCaveHelper();
             //Let's get some space for our codecave
-            origanGetNextPacket = memRead.GetCallFunction(Util.GlobalVars.GetNextPacket);
+            origanGetNextPacket = memRead.GetCallFunction(Addresses.MyAddresses.GetnextPacket.Address);
             CodeCaveAdr = WinApi.VirtualAllocEx(TibiaHandle, IntPtr.Zero, 1024, WinApi.AllocationType.Commit | WinApi.AllocationType.Reserve, WinApi.MemoryProtection.ExecuteReadWrite);
             GotPacketAdr = WinApi.VirtualAllocEx(TibiaHandle, IntPtr.Zero, 1, WinApi.AllocationType.Commit | WinApi.AllocationType.Reserve, WinApi.MemoryProtection.ExecuteReadWrite);
 
@@ -66,19 +66,20 @@ namespace MemoryScanner.Tests
         {
             CodeCaveHelper cv = new CodeCaveHelper();
             cv.AddLine((byte)0xE8);
-            cv.AddInt(((int)(CodeCaveAdr.ToInt32() - Util.GlobalVars.GetNextPacket) - 5));
+            cv.AddInt(((int)(CodeCaveAdr.ToInt32() - Addresses.MyAddresses.GetnextPacket.Address) - 5));
         
-            memRead.WriteBytes(Util.GlobalVars.GetNextPacket, cv.Data, (uint)cv.Data.Length);
+            memRead.WriteBytes(Addresses.MyAddresses.GetnextPacket.Address, cv.Data, (uint)cv.Data.Length);
         }
         public void CleanUp()
         {
+            if (running == false) { return; }
             running = false;
          
             CodeCaveHelper cv = new CodeCaveHelper();
             cv.AddLine((byte)0xE8);
-            cv.AddInt(((int)(origanGetNextPacket - Util.GlobalVars.GetNextPacket) - 5));
+            cv.AddInt(((int)(origanGetNextPacket - Addresses.MyAddresses.GetnextPacket.Address) - 5));
     
-            memRead.WriteBytes(Util.GlobalVars.GetNextPacket, cv.Data, (uint)cv.Data.Length);
+            memRead.WriteBytes(Addresses.MyAddresses.GetnextPacket.Address, cv.Data, (uint)cv.Data.Length);
             memRead.WriteByte(GotPacketAdr.ToInt32(), 0);
             WinApi.VirtualFreeEx(TibiaHandle, CodeCaveAdr, 1024, WinApi.AllocationType.Release);
             WinApi.VirtualFreeEx(TibiaHandle, GotPacketAdr, 1, WinApi.AllocationType.Release);
@@ -116,18 +117,18 @@ namespace MemoryScanner.Tests
             }
             public int Lenght
             {
-                get { return memRead.ReadInt32(Util.GlobalVars.ReciveStream + 4); }
+                get { return memRead.ReadInt32(Addresses.MyAddresses.ReciveStream.Address + 4); }
             }
             public int Postion
             {
-                get { return memRead.ReadInt32(Util.GlobalVars.ReciveStream + 8) -1; }
+                get { return memRead.ReadInt32(Addresses.MyAddresses.ReciveStream.Address + 8) - 1; }
             }
             public byte[] Data
             {
                 get
                 {
                     byte[] packet = new byte[Lenght];
-                    uint streamPointer = memRead.ReadUInt32(Util.GlobalVars.ReciveStream);
+                    uint streamPointer = memRead.ReadUInt32(Addresses.MyAddresses.ReciveStream.Address);
                     packet = memRead.ReadBytes(streamPointer +8, (uint)Lenght);
                     return packet;
                 }

@@ -6,15 +6,15 @@ using System.Threading.Tasks;
 using System.Diagnostics;
 namespace MemoryScanner.Addresses
 {
-    public class Health : GetAddresses 
+    public class AddPacketByte : GetAddresses
     {
-
         MemoryScanner memScan;
         MemoryReader memRead;
         AddressType Type;
         private int m_address;
-        public Health(MemoryReader _memRead, MemoryScanner _memScan, AddressType _type)
+        public AddPacketByte(MemoryReader _memRead, MemoryScanner _memScan, AddressType _type)
         {
+
             this.memRead = _memRead;
             this.memScan = _memScan;
             this.Type = _type;
@@ -40,17 +40,14 @@ namespace MemoryScanner.Addresses
         }
         public override void Search()
         {
-         
-            List<int> values = memScan.ScanString("Hit Points");
-            if(values.Count > 0)
-            {
-                values = memScan.ScanInt32(values[0]);
+            byte[] SearchBytes = new byte[] { 0xB9, 0x96, 0x00, 0x00, 0x00, 0xE8 };//MOV ECX,096        
+            List<int> values = memScan.ScanBytes(SearchBytes);
+            if (values.Count > 0)
+            {                
+               m_address = memRead.GetCallFunction(values[0] + 12);         
               
-                MyAddresses.XorKey.Address = memRead.ReadInt32(values[0] + 14);
-                MyAddresses.Mana.Address = memRead.ReadInt32(values[0] + 50);
-                m_address  = memRead.ReadInt32(values[0] + 20);              
-            }
-           
+            }        
+
         }
         public override string GetString()
         {
@@ -66,8 +63,8 @@ namespace MemoryScanner.Addresses
             else
             {
                 val = Address;
-            }          
-            return "HitPoints = 0x" + val.ToString("X");
+            }    
+            return "AddPacketByte = 0x" + val.ToString("X");
         }
         public override bool CheckAddress()
         {

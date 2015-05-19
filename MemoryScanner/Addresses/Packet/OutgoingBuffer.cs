@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace MemoryScanner.Addresses
 {
-    class OutgoingBuffer:GetAddresses
+    public class OutgoingBuffer : GetAddresses
     {
         MemoryScanner memScan;
         MemoryReader memRead;
@@ -27,13 +27,20 @@ namespace MemoryScanner.Addresses
             }
 
         }
-        public override int GetAddress()
+        public override int Address
         {
-            if (m_address > 0)
+            get
             {
                 return m_address;
             }
-
+            set
+            {
+                m_address = value;
+            }
+        }
+        public override void Search()
+        {
+          
             byte[] SearchBytes = new byte[] { 0xC6, 0x45, 0xFC, 0x01, 0xBF, 0x06, 0x00, 0x00, 0x00, 0x89, 0xBD, 0xA0, 0xFE, 0xFF, 0xFF, 0x8D, 0x46, 0x02, 0x3B, 0xF8, 0x7D, 0x19 };
             List<int> values = memScan.ScanBytes(SearchBytes);
             if (values.Count > 0)
@@ -43,25 +50,28 @@ namespace MemoryScanner.Addresses
                 int OutGoingBuffer = memRead.ReadInt32(adr + 2);
                 int xtea = memRead.ReadInt32(adr + 11);
                 int len = memRead.ReadInt32(adr + 34);
-                Util.GlobalVars.XteaKey = xtea;
-                Util.GlobalVars.OutGoingBufferLen = len;
-
-                m_address = OutGoingBuffer;
-                Util.GlobalVars.OutGoingBuffer = m_address;
+                m_address = OutGoingBuffer;             
+                MyAddresses.XTEA.Address = xtea;
+                MyAddresses.OutGoingPacketLen.Address = len;               
 
             }
-
-
-            if (!Util.GlobalVars.ShowWithBase)
-            {
-               return m_address - memScan.BaseAddress;
-            }
-            return m_address;
-
         }
         public override string GetString()
         {
-            return "OutGoingBuffer = 0x" + this.GetAddress().ToString("X");
+            int val = 0;
+            if (m_address == 0)
+            {
+                Search();
+            }
+            if (!Util.GlobalVars.ShowWithBase)
+            {
+                val = Address - memScan.BaseAddress;
+            }
+            else
+            {
+                val = Address;
+            }    
+            return "OutGoingBuffer = 0x" + val.ToString("X");
         }
         public override bool CheckAddress()
         {

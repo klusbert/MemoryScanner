@@ -7,7 +7,7 @@ using System.Diagnostics;
 
 namespace MemoryScanner.Addresses
 {
-    class Mc : GetAddresses
+    public class Mc : GetAddresses
     {
         MemoryScanner memScan;
         MemoryReader memRead;
@@ -27,12 +27,19 @@ namespace MemoryScanner.Addresses
             }
 
         }
-        public override int GetAddress()
+        public override int Address
         {
-            if (m_address > 0)
+            get
             {
                 return m_address;
             }
+            set
+            {
+                m_address = value;
+            }
+        }
+        public override void Search()
+        {      
             List<int> values = memScan.ScanString("TibiaPlayerMutex");
             if (values.Count > 0)
             {
@@ -43,19 +50,28 @@ namespace MemoryScanner.Addresses
                  
                 }
             }
-            if (!Util.GlobalVars.ShowWithBase)
-            {
-                return m_address - memScan.BaseAddress;
-            }
-            return m_address;
+           
         }
         public override string GetString()
         {
-            return "Mc = 0x" + this.GetAddress().ToString("X");
+            int val = 0;
+            if (m_address == 0)
+            {
+                Search();
+            }
+            if (!Util.GlobalVars.ShowWithBase)
+            {
+                val = Address - memScan.BaseAddress;
+            }
+            else
+            {
+                val = Address;
+            }    
+            return "Mc = 0x" + val.ToString("X");
         }
         public override bool CheckAddress()
         {
-            int adr = this.GetAddress();
+            int adr = Address;
             
             WinApi.PROCESS_INFORMATION pi = new WinApi.PROCESS_INFORMATION();
             WinApi.STARTUPINFO si = new WinApi.STARTUPINFO();
@@ -72,7 +88,7 @@ namespace MemoryScanner.Addresses
          
             WinApi.ResumeThread(pi.hThread);
             p.WaitForInputIdle();
-            Writer.WriteByte(this.GetAddress(), 0x75);// write jnz short
+            Writer.WriteByte(Address, 0x75);// write jnz short
             WinApi.CloseHandle(handle);
             WinApi.CloseHandle(pi.hProcess);
             WinApi.CloseHandle(pi.hThread);

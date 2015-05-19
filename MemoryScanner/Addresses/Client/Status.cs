@@ -7,11 +7,12 @@ using System.Diagnostics;
 
 namespace MemoryScanner.Addresses
 {
-    class Status:GetAddresses
+    public class Status : GetAddresses
     {
         MemoryScanner memScan;
         MemoryReader memRead;
         AddressType Type;
+        private int m_address;
         public Status(MemoryReader _memRead, MemoryScanner _memScan, AddressType _type)
         {
             this.memRead = _memRead;
@@ -26,21 +27,41 @@ namespace MemoryScanner.Addresses
             }
 
         }
-        public override int GetAddress()
+        public override int Address
         {
-            if (!Util.GlobalVars.ShowWithBase)
+            get
             {
-                return Util.GlobalVars.ConnectionStatus - memScan.BaseAddress;
+                return m_address;
             }
-            return Util.GlobalVars.ConnectionStatus;
+            set
+            {
+                m_address = value;
+            }
+        }
+        public override void Search()
+        {
+          
         }
         public override string GetString()
         {
-            return "ConnectionStatus = 0x" + this.GetAddress().ToString("X");
+            int val = 0;
+            if (m_address == 0)
+            {
+                Search();
+            }
+            if (!Util.GlobalVars.ShowWithBase)
+            {
+                val = Address - memScan.BaseAddress;
+            }
+            else
+            {
+                val = Address;
+            }    
+            return "ConnectionStatus = 0x" +val.ToString("X");
         }
         public override bool CheckAddress()
         {
-           if(memRead.ReadInt32(this.GetAddress())== 11)
+           if(memRead.ReadInt32(this.Address)== 11)
            {
                return true;
            }

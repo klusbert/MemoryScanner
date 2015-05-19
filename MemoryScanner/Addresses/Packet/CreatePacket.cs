@@ -6,15 +6,14 @@ using System.Threading.Tasks;
 using System.Diagnostics;
 namespace MemoryScanner.Addresses
 {
-    class AddPacketByte : GetAddresses
+    public class CreatePacket : GetAddresses
     {
         MemoryScanner memScan;
         MemoryReader memRead;
         AddressType Type;
         private int m_address;
-        public AddPacketByte(MemoryReader _memRead, MemoryScanner _memScan, AddressType _type)
+        public CreatePacket(MemoryReader _memRead, MemoryScanner _memScan, AddressType _type)
         {
-
             this.memRead = _memRead;
             this.memScan = _memScan;
             this.Type = _type;
@@ -27,32 +26,37 @@ namespace MemoryScanner.Addresses
             }
 
         }
-        public override int GetAddress()
+        public override int Address
         {
-            if (m_address > 0)
+            get
             {
                 return m_address;
             }
-         
-            byte[] SearchBytes = new byte[] { 0xB9, 0x96, 0x00, 0x00, 0x00, 0xE8 };//MOV ECX,096        
-            List<int> values = memScan.ScanBytes(SearchBytes);
-            if (values.Count > 0)
+            set
             {
-                
-               m_address = memRead.GetCallFunction(values[0] + 12);
-               Util.GlobalVars.AddBytePacket = m_address;
-              
+                m_address = value;
             }
-            if (!Util.GlobalVars.ShowWithBase)
-            {
-                return m_address - memScan.BaseAddress;
-            }
-            return m_address;
-
+        }
+        public override void Search()
+        {             
+            return;
         }
         public override string GetString()
         {
-            return "AddPacketByte = 0x" + this.GetAddress().ToString("X");
+            int val = 0;
+            if (m_address == 0)
+            {
+                Search();
+            }
+            if (!Util.GlobalVars.ShowWithBase)
+            {
+                val = Address - memScan.BaseAddress;
+            }
+            else
+            {
+                val = Address;
+            }    
+            return "CreatePacket = 0x" + val.ToString("X");
         }
         public override bool CheckAddress()
         {

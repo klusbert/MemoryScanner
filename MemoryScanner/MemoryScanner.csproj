@@ -44,20 +44,21 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Addresses\Client\PacketRelated\AddPacketByte.cs" />
-    <Compile Include="Addresses\Client\PacketRelated\GetNextPacket.cs" />
-    <Compile Include="Addresses\Client\PacketRelated\ParseFunction.cs" />
+    <Compile Include="Addresses\MyAddresses.cs" />
+    <Compile Include="Addresses\Packet\AddPacketByte.cs" />
+    <Compile Include="Addresses\Packet\GetNextPacket.cs" />
+    <Compile Include="Addresses\Packet\ParseFunction.cs" />
     <Compile Include="Addresses\Client\Status.cs" />
     <Compile Include="Addresses\Battlelist\MaxCreatures.cs" />
     <Compile Include="Addresses\Container\ContainerPointer.cs" />
     <Compile Include="Addresses\Map\FullLight.cs" />
     <Compile Include="Addresses\Client\NopFps.cs" />
-    <Compile Include="Addresses\Client\PacketRelated\OutgoingBuffer.cs" />
-    <Compile Include="Addresses\Client\PacketRelated\OutGoingPacketLen.cs" />
+    <Compile Include="Addresses\Packet\OutgoingBuffer.cs" />
+    <Compile Include="Addresses\Packet\OutGoingPacketLen.cs" />
     <Compile Include="Addresses\Player\PlayerY.cs" />
     <Compile Include="Addresses\Player\PlayerZ.cs" />
     <Compile Include="Addresses\Player\AttackCount.cs" />
-    <Compile Include="Addresses\Client\PacketRelated\CreatePacket.cs" />
+    <Compile Include="Addresses\Packet\CreatePacket.cs" />
     <Compile Include="Addresses\Player\Experience.cs" />
     <Compile Include="Addresses\GetAddresses.cs" />
     <Compile Include="Addresses\Player\Health.cs" />
@@ -66,23 +67,23 @@
     <Compile Include="Addresses\Map\MapPointer.cs" />
     <Compile Include="Addresses\Client\Mc.cs" />
     <Compile Include="Addresses\Player\PlayerId.cs" />
-    <Compile Include="Addresses\Client\PacketRelated\SendPacket.cs" />
+    <Compile Include="Addresses\Packet\SendPacket.cs" />
     <Compile Include="Addresses\Player\RedSquare.cs" />
     <Compile Include="Addresses\Player\XorKey.cs" />
     <Compile Include="Addresses\Player\PlayerX.cs" />
-    <Compile Include="Addresses\Client\PacketRelated\ReciveStream.cs" />
+    <Compile Include="Addresses\Packet\ReciveStream.cs" />
     <Compile Include="Addresses\Client\PrintFps.cs" />
     <Compile Include="Addresses\Client\PrintText.cs" />
     <Compile Include="Addresses\Client\ShowFPS.cs" />
     <Compile Include="Addresses\Battlelist\Start.cs" />
     <Compile Include="Addresses\Battlelist\Step.cs" />
     <Compile Include="Addresses\Client\WalkFunction.cs" />
-    <Compile Include="Addresses\Client\PacketRelated\RecivePointer.cs" />
-    <Compile Include="Addresses\Client\PacketRelated\SendPointer.cs" />
+    <Compile Include="Addresses\Packet\RecivePointer.cs" />
+    <Compile Include="Addresses\Packet\SendPointer.cs" />
     <Compile Include="Addresses\Client\StatusBarText.cs" />
     <Compile Include="Addresses\Client\StatusBarTime.cs" />
     <Compile Include="Addresses\Map\StepTile.cs" />
-    <Compile Include="Addresses\Client\PacketRelated\Xtea.cs" />
+    <Compile Include="Addresses\Packet\Xtea.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using System.Diagnostics;
 namespace MemoryScanner.Addresses
 {
-    class ShowFPS:GetAddresses
+    public class ShowFPS : GetAddresses
     {
         MemoryScanner memScan;
         MemoryReader memRead;
@@ -26,31 +26,48 @@ namespace MemoryScanner.Addresses
             }
 
         }
-        public override int GetAddress()
+        public override int Address
         {
-            if (m_address > 0)
+            get
             {
                 return m_address;
             }
+            set
+            {
+                m_address = value;
+            }
+        }
+        public override void Search()
+        {
+        
             byte[] SearchBytes = new byte[] { 0x8B, 0x01, 0xFF, 0x71, 0x18, 0xFF, 0x71, 0x14, 0x6A, 0x01, 0xFF, 0x50, 0x4C };
             List<int> values = memScan.ScanBytes(SearchBytes);
             if (values.Count > 0)
             {
                 values[0] += SearchBytes.Length + 2;
-                m_address = memRead.ReadInt32(values[0]);              
-                Util.GlobalVars.NopFPS = values[0] + 5;
-                Util.GlobalVars.ShowFPS = m_address;
+                m_address = memRead.ReadInt32(values[0]);         
+          
+                MyAddresses.NopFPS.Address = values[0] + 5;
                
             }
-            if (!Util.GlobalVars.ShowWithBase)
-            {
-                return m_address - memScan.BaseAddress;
-            }
-            return m_address;
+         
         }
         public override string GetString()
         {
-            return "ShowFPS = 0x" + this.GetAddress().ToString("X");
+            int val = 0;
+            if (m_address == 0)
+            {
+                Search();
+            }
+            if (!Util.GlobalVars.ShowWithBase)
+            {
+                val = Address - memScan.BaseAddress;
+            }
+            else
+            {
+                val = Address;
+            }    
+            return "ShowFPS = 0x" + val.ToString("X");
         }
         public override bool CheckAddress()
         {

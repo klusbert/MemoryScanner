@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace MemoryScanner.Addresses
 {
-    class RecivePointer:GetAddresses
+    public class RecivePointer : GetAddresses
     {
         MemoryScanner memScan;
         MemoryReader memRead;
@@ -25,12 +25,20 @@ namespace MemoryScanner.Addresses
                 return Type;
             }
         }
-        public override int GetAddress()
+        public override int Address
         {
-            if(m_address > 0)
+            get
             {
                 return m_address;
             }
+            set
+            {
+                m_address = value;
+            }
+        }
+        public override void Search()
+        {
+         
             byte[] SearchBytes = new byte[] { 0x8B, 0xEC, 0xFF, 0x75, 0x10, 0xFF, 0x75, 0x0C, 0xFF, 0x75, 0x08, 0xFF, 0x71, 0x04 };
             List<int> values = memScan.ScanBytes(SearchBytes);
             if (values.Count > 0)
@@ -44,19 +52,26 @@ namespace MemoryScanner.Addresses
             {
                 //send
                 int adr = values[1] + SearchBytes.Length + 2;
-                adr = memRead.ReadInt32(adr);
-                Util.GlobalVars.SendPointer = adr;
-            }
-
-            if (!Util.GlobalVars.ShowWithBase)
-            {
-                return m_address - memScan.BaseAddress;
-            }
-            return m_address;
+                adr = memRead.ReadInt32(adr);             
+                MyAddresses.SendPointer.Address = adr;
+            }         
         }
         public override string GetString()
         {
-            return "RecvPointer = 0x" + this.GetAddress().ToString("X");
+            int val = 0;
+            if (m_address == 0)
+            {
+                Search();
+            }
+            if (!Util.GlobalVars.ShowWithBase)
+            {
+                val = Address - memScan.BaseAddress;
+            }
+            else
+            {
+                val = Address;
+            }    
+            return "RecvPointer = 0x" + val.ToString("X");
         }
         public override bool CheckAddress()
         {

@@ -7,7 +7,7 @@ using System.Diagnostics;
 
 namespace MemoryScanner.Addresses
 {
-    class GetNextPacket:GetAddresses
+    public class GetNextPacket : GetAddresses
     {
         MemoryScanner memScan;
         MemoryReader memRead;
@@ -27,34 +27,49 @@ namespace MemoryScanner.Addresses
             }
 
         }
-        public override int GetAddress()
+        public override int Address
         {
-            if (m_address > 0)
+            get
             {
                 return m_address;
             }
+            set
+            {
+                m_address = value;
+            }
+        }
+        public override void Search()
+        {
+       
             byte[] SearchBytes = new byte[] { 0x8B, 0xF8, 0x89, 0xBD, 0xF8, 0xFD, 0xFF, 0xFF, 0x83, 0xFF, 0xFF };
             List<int> value = memScan.ScanBytes(SearchBytes);
             if (value.Count > 0)
             {
-                int GetNextPacket = value[0] - 5;       
-            
-                 Util.GlobalVars.ParseFunction =    Util.GlobalVars.SearchForFunctionStart(memRead, GetNextPacket);
-                 Util.GlobalVars.ConnectionStatus = memRead.ReadInt32(GetNextPacket + 58);
-
-                m_address = GetNextPacket;
-                Util.GlobalVars.GetNextPacket = m_address;
+                int GetNextPacket = value[0] - 5;  
+                    
+                m_address = GetNextPacket;                
+                MyAddresses.ParseFunction.Address = Util.GlobalVars.SearchForFunctionStart(memRead, GetNextPacket);
+                MyAddresses.Status.Address = memRead.ReadInt32(GetNextPacket + 58);
               
             }
-            if (!Util.GlobalVars.ShowWithBase)
-            {
-                return m_address - memScan.BaseAddress;
-            }
-            return m_address; 
+          
         }
         public override string GetString()
         {
-            return "GetNextPacket = 0x" + this.GetAddress().ToString("X");
+            int val = 0;
+            if (m_address == 0)
+            {
+                Search();
+            }
+            if (!Util.GlobalVars.ShowWithBase)
+            {
+                val = Address - memScan.BaseAddress;
+            }
+            else
+            {
+                val = Address;
+            }    
+            return "GetNextPacket = 0x" + val.ToString("X");
         }
         public override bool CheckAddress()
         {

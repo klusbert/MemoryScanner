@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using System.Diagnostics;
 namespace MemoryScanner.Addresses
 {
-    class PrintFps:GetAddresses
+    public class PrintFps : GetAddresses
     {
         MemoryScanner memScan;
         MemoryReader memRead;
@@ -27,32 +27,46 @@ namespace MemoryScanner.Addresses
             }
 
         }
-        public override int GetAddress()
+        public override int Address
         {
-            if (m_address > 0)
+            get
             {
                 return m_address;
             }
+            set
+            {
+                m_address = value;
+            }
+        }
+        public override void Search()
+        {         
           //  byte[] SearchBytes = new byte[] { 0x6A, 0x00, 0x8D, 0x45, 0xD0, 0x50, 0x83, 0xEC, 0x0C, 0x8B, 0xD4, 0xC7, 0x02, 0xC8, 0x00, 0x00, 0x00, 0xC7, 0x42, 0x04, 0xC8, 0x00, 0x00, 0x00, 0xC7, 0x42, 0x08, 0xC8, 0x00, 0x00, 0x00, 0x6A, 0x02 };
             byte[]SearchBytes = new byte []{0x2B, 0xD8, 0x8B, 0xC3, 0x99, 0x2B, 0xC2, 0xD1, 0xF8, 0x83, 0xC0, 0x04, 0x50, 0x8B, 0xD6, 0xB9, 0x01, 0x00, 0x00, 0x00};
             List<int> values = memScan.ScanBytes(SearchBytes);
             if (values.Count > 0)
             {
                 values[0] += SearchBytes.Length;
-                Util.GlobalVars.PrintTextFunc = memRead.GetCallFunction(values[0]);
                 m_address = values[0];
-                Util.GlobalVars.PrintFPS = m_address;
+                MyAddresses.PrintText.Address = memRead.GetCallFunction(values[0]);
           
-            }
-            if (!Util.GlobalVars.ShowWithBase)
-            {
-                return m_address - memScan.BaseAddress;
-            }
-            return m_address;
+            }         
         }
         public override string GetString()
         {
-            return "PrintFps = 0x" + this.GetAddress().ToString("X");
+            int val = 0;
+            if (m_address == 0)
+            {
+                Search();
+            }
+            if (!Util.GlobalVars.ShowWithBase)
+            {
+                val = Address - memScan.BaseAddress;
+            }
+            else
+            {
+                val = Address;
+            }    
+            return "PrintFps = 0x" + val.ToString("X");
         }
         public override bool CheckAddress()
         {

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace MemoryScanner.Addresses
 {
-    class WalkFunction : GetAddresses
+    public class WalkFunction : GetAddresses
     {
         MemoryScanner memScan;
         MemoryReader memRead;
@@ -27,12 +27,20 @@ namespace MemoryScanner.Addresses
             }
 
         }
-        public override int GetAddress()
+        public override int Address
         {
-            if (m_address > 0)
+            get
             {
                 return m_address;
             }
+            set
+            {
+                m_address = value;
+            }
+        }
+        public override void Search()
+        {
+           
             byte[] SearchBytes = new byte[] { 0x6A, 0x01, 0x6A, 0xFF, 0x6A, 0xFF, 0xE8 };//push 1 push -1 push -1
             List<int> values = memScan.ScanBytes(SearchBytes);
             if (values.Count > 0)
@@ -41,15 +49,23 @@ namespace MemoryScanner.Addresses
                 m_address = adr;
                
             }
-            if (!Util.GlobalVars.ShowWithBase)
-            {
-                return m_address - memScan.BaseAddress;
-            }
-            return m_address;
-        }
+       }
         public override string GetString()
         {
-            return "WalkFunction = 0x" + this.GetAddress().ToString("X");
+            int val = 0;
+            if (m_address == 0)
+            {
+                Search();
+            }
+            if (!Util.GlobalVars.ShowWithBase)
+            {
+                val = Address - memScan.BaseAddress;
+            }
+            else
+            {
+                val = Address;
+            }    
+            return "WalkFunction = 0x" + val.ToString("X");
         }
         public override bool CheckAddress()
         {

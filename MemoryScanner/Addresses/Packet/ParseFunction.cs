@@ -4,15 +4,16 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Diagnostics;
+
 namespace MemoryScanner.Addresses
 {
-    class CreatePacket : GetAddresses
+    public class ParseFunction : GetAddresses
     {
         MemoryScanner memScan;
         MemoryReader memRead;
         AddressType Type;
         private int m_address;
-        public CreatePacket(MemoryReader _memRead, MemoryScanner _memScan, AddressType _type)
+        public ParseFunction(MemoryReader _memRead, MemoryScanner _memScan, AddressType _type)
         {
             this.memRead = _memRead;
             this.memScan = _memScan;
@@ -26,24 +27,37 @@ namespace MemoryScanner.Addresses
             }
 
         }
-        public override int GetAddress()
+        public override int Address
         {
-            if (m_address > 0)
+            get
             {
                 return m_address;
-            }         
-            m_address = memRead.GetCallFunction(Util.GlobalVars.AttackCountRegion + 5);
-            Util.GlobalVars.CreatePacket = m_address;
-
-            if (!Util.GlobalVars.ShowWithBase)
-            {
-                return m_address - memScan.BaseAddress;
             }
-            return m_address;
+            set
+            {
+                m_address = value;
+            }
+        }
+        public override void Search()
+        {            
+            return;
         }
         public override string GetString()
         {
-            return "CreatePacket = 0x" + this.GetAddress().ToString("X");
+            int val = 0;
+            if (m_address == 0)
+            {
+                Search();
+            }
+            if (!Util.GlobalVars.ShowWithBase)
+            {
+                val = Address - memScan.BaseAddress;
+            }
+            else
+            {
+                val = Address;
+            }    
+            return "ParseFunction = 0x" + val.ToString("X");
         }
         public override bool CheckAddress()
         {

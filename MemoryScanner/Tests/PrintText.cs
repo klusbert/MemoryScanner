@@ -41,7 +41,7 @@ namespace MemoryScanner.Tests
 
             cv.AddLine((byte)0xb9, (UInt32)0x1); //push 1                      
 
-            cv.AddLine((byte)0xB8, (UInt32)Util.GlobalVars.PrintTextFunc); // mov eax dword PrintName
+            cv.AddLine((byte)0xB8, (UInt32)Addresses.MyAddresses.PrintText.Address); // mov eax dword PrintName
 
             cv.AddLine((byte)0xff, (byte)0xD0); // call eax Thanks Darkstar
 
@@ -60,12 +60,12 @@ namespace MemoryScanner.Tests
                   0xE8, 0xff, 0xff, 0xff,0xff,
 
             };
-            Int32 offset2 = CaveAddress.ToInt32() - (int)Util.GlobalVars.PrintFPS - 5;
+            Int32 offset2 = CaveAddress.ToInt32() - (int)Addresses.MyAddresses.PrintFPS.Address - 5;
 
             Array.Copy(BitConverter.GetBytes(offset2), 0, ReplaceBytes, 1, 4);
           
-            memRead.WriteBytes(Util.GlobalVars.PrintFPS, ReplaceBytes, (uint)ReplaceBytes.Length);
-            memRead.WriteByte(Util.GlobalVars.ShowFPS, 1);
+            memRead.WriteBytes(Addresses.MyAddresses.PrintFPS.Address, ReplaceBytes, (uint)ReplaceBytes.Length);
+            memRead.WriteByte(Addresses.MyAddresses.ShowFPS.Address, 1);
         }
 
     }

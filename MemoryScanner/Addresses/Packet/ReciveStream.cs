@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using System.Diagnostics;
 namespace MemoryScanner.Addresses
 {
-    class ReciveStream:GetAddresses
+    public class ReciveStream : GetAddresses
     {
         MemoryScanner memScan;
         MemoryReader memRead;
@@ -26,30 +26,42 @@ namespace MemoryScanner.Addresses
             }
 
         }
-        public override int GetAddress()
+        public override int Address
         {
-            if (m_address > 0)
+            get
             {
                 return m_address;
             }
+            set
+            {
+                m_address = value;
+            }
+        }
+        public override void Search()
+        {          
             List<int> values = memScan.ScanString("packet size is too small even for one encrypted block");
             if (values.Count > 0)
             {
                 values = memScan.ScanInt32(values[0]);
-                m_address = memRead.ReadInt32(values[0] - 76);
-                Util.GlobalVars.ReciveStream = m_address;
-
-                
-            }
-            if (!Util.GlobalVars.ShowWithBase)
-            {
-                return m_address - memScan.BaseAddress;
-            }
-            return m_address;
+                m_address = memRead.ReadInt32(values[0] - 76);                            
+            }          
         }
         public override string GetString()
         {
-            return "ReciveStream = 0x" + this.GetAddress().ToString("X");
+            int val = 0;
+            if (m_address == 0)
+            {
+                Search();
+            }
+            if (!Util.GlobalVars.ShowWithBase)
+            {
+                val = Address - memScan.BaseAddress;
+            }
+            else
+            {
+                val = Address;
+            }    
+            return "ReciveStream = 0x" + val.ToString("X");
         }
         public override bool CheckAddress()
         {

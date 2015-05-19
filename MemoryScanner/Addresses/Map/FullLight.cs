@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using System.Diagnostics;
 namespace MemoryScanner.Addresses
 {
-    class FullLight:GetAddresses
+    public class FullLight : GetAddresses
     {
         MemoryScanner memScan;
         MemoryReader memRead;
@@ -25,28 +25,44 @@ namespace MemoryScanner.Addresses
                 return Type;
             }
         }
-        public override int GetAddress()
+        public override int Address
         {
-            if (m_address > 0)
+            get
             {
                 return m_address;
-            }     
+            }
+            set
+            {
+                m_address = value;
+            }
+        }
+        public override void Search()
+        {
+             
             byte[] SearchBytes = new byte[] { 0x3D, 0xFF, 0x00, 0x00, 0x00, 0x0F, 0x4F, 0xC1, 0x53, 0x8B, 0x1D };
             List<int> values = memScan.ScanBytes(SearchBytes);
             if (values.Count > 0)
             {              
                 m_address = values[0] + 9;
              
-            }
-            if (!Util.GlobalVars.ShowWithBase)
-            {
-                return m_address - memScan.BaseAddress;
-            }
-            return m_address;
+            }           
         }
         public override string GetString()
         {
-            return "MapFullLight = 0x" + this.GetAddress().ToString("X");
+            int val = 0;
+            if (m_address == 0)
+            {
+                Search();
+            }
+            if (!Util.GlobalVars.ShowWithBase)
+            {
+                val = Address - memScan.BaseAddress;
+            }
+            else
+            {
+                val = Address;
+            }    
+            return "MapFullLight = 0x" + val.ToString("X");
         }
         public override bool CheckAddress()
         {

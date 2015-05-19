@@ -6,11 +6,12 @@ using System.Threading.Tasks;
 using System.Diagnostics;
 namespace MemoryScanner.Addresses
 {
-    class PlayerZ:GetAddresses
+    public class PlayerZ : GetAddresses
     {
         MemoryScanner memScan;
         MemoryReader memRead;
         AddressType Type;
+        private int m_address;
         public PlayerZ(MemoryReader _memRead, MemoryScanner _memScan, AddressType _type)
         {
             this.memRead = _memRead;
@@ -25,18 +26,37 @@ namespace MemoryScanner.Addresses
             }
 
         }
-        public override int GetAddress()
+        public override int Address
         {
-            if (!Util.GlobalVars.ShowWithBase)
+            get
             {
-                return Util.GlobalVars.PlayerZ - memScan.BaseAddress;
+                return m_address;
             }
-            return Util.GlobalVars.PlayerZ;
+            set
+            {
+                m_address = value;
+            }
+        }
+        public override void Search()
+        {           
+            return;
         }
         public override string GetString()
         {
-            int adr = this.GetAddress();
-            return "Z = 0x" + adr.ToString("X");
+            int val = 0;
+            if (m_address == 0)
+            {
+                Search();
+            }
+            if (!Util.GlobalVars.ShowWithBase)
+            {
+                val = Address - memScan.BaseAddress;
+            }
+            else
+            {
+                val = Address;
+            }    
+            return "Z = 0x" + val.ToString("X");
         }
         public override bool CheckAddress()
         {

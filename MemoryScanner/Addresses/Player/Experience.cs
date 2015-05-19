@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using System.Diagnostics;
 namespace MemoryScanner.Addresses
 {
-    class Experience : GetAddresses
+    public class Experience : GetAddresses
     {
         MemoryScanner memScan;
         MemoryReader memRead;
@@ -26,12 +26,19 @@ namespace MemoryScanner.Addresses
             }
 
         }
-        public override int GetAddress()
+        public override int Address
         {
-            if (m_address > 0)
+            get
             {
                 return m_address;
             }
+            set
+            {
+                m_address = value;
+            }
+        }
+        public override void Search()
+        {          
             List<int> values = memScan.ScanString("Exp.");
             if (values.Count > 0)
             {
@@ -39,20 +46,27 @@ namespace MemoryScanner.Addresses
                 if (values.Count > 0)
                 {
                     int adr = values[0] - 30;
-                    m_address = memRead.ReadInt32(adr + 1);
-                   
-                    
+                    m_address = memRead.ReadInt32(adr + 1);              
+                                        
                 }
-            }
-            if (!Util.GlobalVars.ShowWithBase)
-            {
-                return m_address - memScan.BaseAddress;
-            }
-            return m_address;
+            }           
         }
         public override string GetString()
         {
-            return "Experience = 0x" + this.GetAddress().ToString("X");
+            int val = 0;
+            if (m_address == 0)
+            {
+                Search();
+            }
+            if (!Util.GlobalVars.ShowWithBase)
+            {
+                val = Address - memScan.BaseAddress;
+            }
+            else
+            {
+                val = Address;
+            }    
+            return "Experience = 0x" + val.ToString("X");
         }
         public override bool CheckAddress()
         {

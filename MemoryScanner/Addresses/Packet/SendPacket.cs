@@ -7,7 +7,7 @@ using System.Diagnostics;
 
 namespace MemoryScanner.Addresses
 {
-    class SendPacket :GetAddresses
+    public class SendPacket : GetAddresses
     {
         MemoryScanner memScan;
         MemoryReader memRead;
@@ -27,24 +27,37 @@ namespace MemoryScanner.Addresses
             }
 
         }
-        public override int GetAddress()
+        public override int Address
         {
-            if (m_address > 0)
+            get
             {
                 return m_address;
             }
-            m_address= memRead.GetCallFunction(Util.GlobalVars.AttackCountRegion + 30);
-            Util.GlobalVars.SendPacket = m_address;
-
-            if (!Util.GlobalVars.ShowWithBase)
+            set
             {
-                return m_address - memScan.BaseAddress;
+                m_address = value;
             }
-            return m_address;
+        }
+        public override void Search()
+        {      
+            
         }
         public override string GetString()
         {
-            return "SendPacket = 0x" + this.GetAddress().ToString("X");
+            int val = 0;
+            if (m_address == 0)
+            {
+                Search();
+            }
+            if (!Util.GlobalVars.ShowWithBase)
+            {
+                val = Address - memScan.BaseAddress;
+            }
+            else
+            {
+                val = Address;
+            }    
+            return "SendPacket = 0x" + val.ToString("X");
         }
         public override bool CheckAddress()
         {         

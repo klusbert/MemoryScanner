@@ -6,11 +6,12 @@ using System.Threading.Tasks;
 
 namespace MemoryScanner.Addresses
 {
-    class SendPointer : GetAddresses
+    public class SendPointer : GetAddresses
     {
         MemoryScanner memScan;
         MemoryReader memRead;
         AddressType Type;
+        private int m_address;
         public SendPointer(MemoryReader _memRead, MemoryScanner _memScan, AddressType _type)
         {
             this.memRead = _memRead;
@@ -25,17 +26,37 @@ namespace MemoryScanner.Addresses
             }
 
         }
-        public override int GetAddress()
+        public override int Address
         {
-            if (!Util.GlobalVars.ShowWithBase)
+            get
             {
-                return Util.GlobalVars.SendPointer - memScan.BaseAddress;
+                return m_address;
             }
-            return Util.GlobalVars.SendPointer;
+            set
+            {
+                m_address = value;
+            }
+        }
+        public override void Search()
+        {            
+            return;
         }
         public override string GetString()
         {
-            return "SendPointer = 0x" + this.GetAddress().ToString("X");
+            int val = 0;
+            if (m_address == 0)
+            {
+                Search();
+            }
+            if (!Util.GlobalVars.ShowWithBase)
+            {
+                val = Address - memScan.BaseAddress;
+            }
+            else
+            {
+                val = Address;
+            }    
+            return "SendPointer = 0x" + val.ToString("X");
         }
         public override bool CheckAddress()
         {

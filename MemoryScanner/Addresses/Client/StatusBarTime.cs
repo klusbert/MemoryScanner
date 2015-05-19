@@ -6,11 +6,13 @@ using System.Threading.Tasks;
 
 namespace MemoryScanner.Addresses
 {
-    class StatusBarTime:GetAddresses
+    public class StatusBarTime : GetAddresses
     {
         MemoryScanner memScan;
         MemoryReader memRead;
         AddressType Type;
+        private int m_address;
+
         public StatusBarTime(MemoryReader _memRead, MemoryScanner _memScan, AddressType _type)
         {
             this.memRead = _memRead;
@@ -25,17 +27,37 @@ namespace MemoryScanner.Addresses
             }
 
         }
-        public override int GetAddress()
+        public override int Address
         {
-            if (!Util.GlobalVars.ShowWithBase)
+            get
             {
-                return Util.GlobalVars.StatusBarTime - memScan.BaseAddress;
+                return m_address;
             }
-            return Util.GlobalVars.StatusBarTime;
+            set
+            {
+                m_address = value;
+            }
+        }
+        public override void Search()
+        {
+            
         }
         public override string GetString()
         {
-            return "StatusBarTime = 0x" + this.GetAddress().ToString("X");
+            int val = 0;
+            if (m_address == 0)
+            {
+                Search();
+            }
+            if (!Util.GlobalVars.ShowWithBase)
+            {
+                val = Address - memScan.BaseAddress;
+            }
+            else
+            {
+                val = Address;
+            }    
+            return "StatusBarTime = 0x" + val.ToString("X");
         }
         public override bool CheckAddress()
         {

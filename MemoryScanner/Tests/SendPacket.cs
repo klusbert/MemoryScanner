@@ -59,15 +59,15 @@ namespace MemoryScanner.Tests
         {
             CodeCaveHelper cv = new CodeCaveHelper();
             IntPtr MainThread = OpenAndSuspendThread(tProcess.Id);
-            uint OldPackelen = memRead.ReadUInt32(Util.GlobalVars.OutGoingBufferLen);
-            byte[] OldPacket = memRead.ReadBytes(Util.GlobalVars.OutGoingBuffer, OldPackelen);
+            uint OldPackelen = memRead.ReadUInt32(Addresses.MyAddresses.OutGoingPacketLen.Address);
+            byte[] OldPacket = memRead.ReadBytes(Addresses.MyAddresses.OutGoingBuffer.Address, OldPackelen);
             IntPtr CodeCave = WinApi.VirtualAllocEx(tProcessHandle, IntPtr.Zero, 1024, WinApi.AllocationType.Commit | WinApi.AllocationType.Reserve, WinApi.MemoryProtection.ExecuteReadWrite);
 
 
             //createPacket
             byte packetType = (byte)packet[0];
             cv.AddLine((byte)0xb9, (UInt32)packetType);
-            cv.AddLine((byte)0xB8, (uint)Util.GlobalVars.CreatePacket);
+            cv.AddLine((byte)0xB8, (uint)Addresses.MyAddresses.CreatePacket.Address);
             cv.AddLine((byte)0xff, (byte)0xD0);
 
             for (int i = 1; i < packet.Length; i++)
@@ -75,13 +75,13 @@ namespace MemoryScanner.Tests
                 byte val = packet[i];
 
                 cv.AddLine((byte)0xb9, (UInt32)val);
-                cv.AddLine((byte)0xB8, (uint)Util.GlobalVars.AddBytePacket);
+                cv.AddLine((byte)0xB8, (uint)Addresses.MyAddresses.AddPacketByte.Address);
                 cv.AddLine((byte)0xff, (byte)0xD0);
 
             }
 
             cv.AddLine((byte)0xb1, (byte)0x01); //push 1 as bool( using Xtea encrypt or not
-            cv.AddLine((byte)0xB8, (uint)Util.GlobalVars.SendPacket);
+            cv.AddLine((byte)0xB8, (uint)Addresses.MyAddresses.SendPacket.Address);
             cv.AddLine((byte)0xff, (byte)0xD0); // call eax Thanks Darkstar
 
             cv.AddByte(0xC3);//ret
@@ -94,8 +94,8 @@ namespace MemoryScanner.Tests
             WinApi.CloseHandle(hThread);
             WinApi.VirtualFreeEx(tProcessHandle, CodeCave, 1024, WinApi.AllocationType.Release);         
    
-            memRead.WriteUInt32(Util.GlobalVars.OutGoingBufferLen, OldPackelen);
-            memRead.WriteBytes(Util.GlobalVars.OutGoingBuffer, OldPacket, (uint)OldPackelen);
+            memRead.WriteUInt32(Addresses.MyAddresses.OutGoingPacketLen.Address, OldPackelen);
+            memRead.WriteBytes(Addresses.MyAddresses.OutGoingBuffer.Address, OldPacket, (uint)OldPackelen);
 
             ResumeAndCloseThread(MainThread);
         }

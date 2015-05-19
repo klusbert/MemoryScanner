@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using System.Diagnostics;
 namespace MemoryScanner.Addresses
 {
-    class AttackCount : GetAddresses
+    public class AttackCount : GetAddresses
     {
         MemoryScanner memScan;
         MemoryReader memRead;
@@ -27,29 +27,44 @@ namespace MemoryScanner.Addresses
             }
 
         }
-        public override int GetAddress()
+        public override int Address
         {
-            if (m_address > 0)
+            get
             {
                 return m_address;
             }
+            set
+            {
+                m_address = value;
+            }
+        }
+        public override void Search()
+        {      
             byte[] SearchBytes = new byte[] { 0xB9, 0xA1, 0x00,0x00, 0x00, 0xE8 };     
             List<int> values = memScan.ScanBytes(SearchBytes);//MOV ECX,0A1
             if(values.Count > 0)
-            {
-                Util.GlobalVars.AttackCountRegion = values[0];
-                m_address = memRead.ReadInt32(values[0] - 4);
-               
-            }
-            if (!Util.GlobalVars.ShowWithBase)
-            {
-                return m_address - memScan.BaseAddress;
-            }
-            return m_address;
+            {               
+                MyAddresses.SendPacket.Address = memRead.GetCallFunction(values[0] + 30);
+                MyAddresses.CreatePacket.Address = memRead.GetCallFunction(values[0] + 5);
+                m_address = memRead.ReadInt32(values[0] - 4);               
+            }          
         }
         public override string GetString()
         {
-            return "AttackCount = 0x" + this.GetAddress().ToString("X");
+            int val = 0;
+            if (m_address == 0)
+            {
+                Search();
+            }
+            if (!Util.GlobalVars.ShowWithBase)
+            {
+                val = Address - memScan.BaseAddress;
+            }
+            else
+            {
+                val = Address;
+            }    
+            return "AttackCount = 0x" + val.ToString("X");
         }
         public override bool CheckAddress()
         {

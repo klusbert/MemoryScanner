@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using System.Diagnostics;
 namespace MemoryScanner.Addresses
 {
-    class BlistStart:GetAddresses
+    public class BlistStart : GetAddresses
     {
         MemoryScanner memScan;
         MemoryReader memRead;
@@ -27,31 +27,48 @@ namespace MemoryScanner.Addresses
             }
 
         }
-        public override int GetAddress()
+        public override int Address
         {
-            if (m_address > 0)
+            get
             {
                 return m_address;
-            }         
+            }
+            set
+            {
+                m_address = value;
+            }
+        }
+        public override void Search()
+        {
+       
             byte[] SearchBytes = new byte[] { 0x83, 0xCF, 0xFF, 0x33, 0xC9, 0x89, 0x8D, 0xCC, 0xFE, 0xFF, 0xFF, 0x81 };
             List<int> values = memScan.ScanBytes(SearchBytes);
             if (values.Count > 0)
             {
-                Util.GlobalVars.MaxCreatures = memRead.ReadInt32(values[0] + 13);
-                Util.GlobalVars.StepCreatures = memRead.ReadInt32(values[0] + 21);
+            
+                MyAddresses.MaxCreatures.Address = memRead.ReadInt32(values[0] + 13);
+                MyAddresses.BlistStep.Address = memRead.ReadInt32(values[0] + 21);
                 m_address = memRead.ReadInt32(values[0] + 27);                
              
-            }
-            if (!Util.GlobalVars.ShowWithBase)
-            {
-               return m_address - memScan.BaseAddress;
-            }
-            return m_address;
+            }          
 
         }
         public override string GetString()
         {
-            return "Start = 0x" + this.GetAddress().ToString("X");
+            int val = 0;
+            if (m_address == 0)
+            {
+                Search();
+            }
+            if (!Util.GlobalVars.ShowWithBase)
+            {
+                val = Address - memScan.BaseAddress;
+            }
+            else
+            {
+                val = Address;
+            }    
+            return "Start = 0x" + val.ToString("X");
         }
         public override bool CheckAddress()
         {

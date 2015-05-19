@@ -6,11 +6,12 @@ using System.Threading.Tasks;
 
 namespace MemoryScanner.Addresses
 {
-    class StepTile:GetAddresses
+    public class StepTile : GetAddresses
     {
         MemoryScanner memScan;
         MemoryReader memRead;
         AddressType Type;
+        private int m_address;
         public StepTile(MemoryReader _memRead, MemoryScanner _memScan, AddressType _type)
         {
             this.memRead = _memRead;
@@ -25,13 +26,30 @@ namespace MemoryScanner.Addresses
             }
 
         }
-        public override int GetAddress()
+        public override int Address
         {
-            return Util.GlobalVars.StepTile;
+            get
+            {
+                return m_address;
+            }
+            set
+            {
+                m_address = value;
+            }
+        }
+        public override void Search()
+        {
+            return;
         }
         public override string GetString()
         {
-            return "StepTile = 0x" + this.GetAddress().ToString("X");
+            int val = 0;
+            if (m_address == 0)
+            {
+                Search();
+            }
+            val = Address;                
+            return "StepTile = 0x" + val.ToString("X");
         }
         public override bool CheckAddress()
         {

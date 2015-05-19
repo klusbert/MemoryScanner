@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using System.Diagnostics;
 namespace MemoryScanner.Addresses
 {
-    class MapArray : GetAddresses
+    public class MapArray : GetAddresses
     {
         MemoryScanner memScan;
         MemoryReader memRead;
@@ -25,22 +25,37 @@ namespace MemoryScanner.Addresses
                 return Type;
             }
         }
-        public override int GetAddress()
+        public override int Address
         {
-            if (m_address > 0)
+            get
             {
                 return m_address;
-            }      
-            m_address = memRead.ReadInt32(Util.GlobalVars.MapRegion + 35);
-            if (!Util.GlobalVars.ShowWithBase)
-            {
-                return m_address - memScan.BaseAddress;
             }
-            return m_address;
+            set
+            {
+                m_address = value;
+            }
+        }
+        public override void Search()
+        {
+       
         }
         public override string GetString()
         {
-            return "MapArray = 0x" + this.GetAddress().ToString("X");
+            int val = 0;
+            if (m_address == 0)
+            {
+                Search();
+            }
+            if (!Util.GlobalVars.ShowWithBase)
+            {
+                val = Address - memScan.BaseAddress;
+            }
+            else
+            {
+                val = Address;
+            }    
+            return "MapArray = 0x" + val.ToString("X");
         }
         public override bool CheckAddress()
         {

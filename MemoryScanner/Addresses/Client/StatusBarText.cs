@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace MemoryScanner.Addresses
 {
-    class StatusBarText:GetAddresses
+    public class StatusBarText : GetAddresses
     {
         MemoryScanner memScan;
         MemoryReader memRead;
@@ -26,27 +26,44 @@ namespace MemoryScanner.Addresses
             }
 
         }
-        public override int GetAddress()
+        public override int Address
         {
-            if(m_address > 0)
+            get
             {
                 return m_address;
             }
+            set
+            {
+                m_address = value;
+            }
+        }
+        public override void Search()
+        {
+  
             List<int> values = memScan.ScanString("Sorry, not possible.");
             if(values.Count > 0)
             {
-                m_address = values[0];
-                Util.GlobalVars.StatusBarTime = values[0] - 8;
+                m_address = values[0];              
+                MyAddresses.StatusBarTime.Address = values[0] - 8;
             }
-            if (!Util.GlobalVars.ShowWithBase)
-            {
-                return m_address - memScan.BaseAddress;
-            }
-            return m_address;
+         
         }
         public override string GetString()
         {
-            return "StatusBarText = 0x" + this.GetAddress().ToString("X");
+            int val = 0;
+            if (m_address == 0)
+            {
+                Search();
+            }
+            if (!Util.GlobalVars.ShowWithBase)
+            {
+                val = Address - memScan.BaseAddress;
+            }
+            else
+            {
+                val = Address;
+            }    
+            return "StatusBarText = 0x" + val.ToString("X");
         }
         public override bool CheckAddress()
         {
