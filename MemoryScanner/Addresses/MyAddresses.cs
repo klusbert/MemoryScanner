@@ -9,6 +9,7 @@ namespace MemoryScanner.Addresses
    public static class MyAddresses
     {
        public static Addresses.AttackCount AttackCount;
+       public static Addresses.GuiPointer GuiPointer;
        public static Addresses.CreatePacket CreatePacket;
        public static Addresses.AddPacketByte AddPacketByte;
        public static Addresses.Experience Experience;

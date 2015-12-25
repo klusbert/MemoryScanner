@@ -3,21 +3,21 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Diagnostics;
+
 namespace MemoryScanner.Addresses
 {
-    public class PlayerId : GetAddresses
+  public class GuiPointer:GetAddresses
     {
         MemoryScanner memScan;
         MemoryReader memRead;
         AddressType Type;
         private int m_address;
-        public PlayerId(MemoryReader _memRead, MemoryScanner _memScan, AddressType _type)
+
+        public GuiPointer(MemoryReader _memRead, MemoryScanner _memScan, AddressType _type)
         {
             this.memRead = _memRead;
             this.memScan = _memScan;
             this.Type = _type;
-
         }
         public override GetAddresses.AddressType AddressCategory
         {
@@ -40,19 +40,13 @@ namespace MemoryScanner.Addresses
         }
         public override void Search()
         {
-          
-            byte[] SearchBytes = new byte[] { 0xFF, 0xB3, 0x08, 0x01, 0x00, 0x00, 0xFF, 0xB3, 0x04, 0x01, 0x00, 0x00, 0x6A, 0x00, 0x33, 0xD2, 0xB9, 0xFF, 0xFF, 0x00, 0x00, };
+            byte[] SearchBytes = new byte[] {0xC1,0xE8,0x07,0xA8,0x01,0x74,0x0F};
             List<int> values = memScan.ScanBytes(SearchBytes);
-            if (values.Count > 1)
+            if (values.Count > 0)
             {
-                int playerId = memRead.ReadInt32(values[1] - 4);
-    
-                MyAddresses.PlayerX.Address = playerId + 12;
-                MyAddresses.PlayerY.Address = playerId + 16;
-                MyAddresses.PlayerZ.Address = playerId + 20;
-                MyAddresses.RedSqare.Address = memRead.ReadInt32(values[1] + 49);
-                m_address = playerId;         
-            }          
+                int adr = values[0] - 26;
+                m_address = memRead.ReadInt32(adr);
+            }
         }
         public override string GetString()
         {
@@ -69,7 +63,7 @@ namespace MemoryScanner.Addresses
             {
                 val = Address;
             }    
-            return "Id = 0x" + val.ToString("X");
+            return "GuiPointer = 0x" + val.ToString("X");
         }
         public override bool CheckAddress()
         {

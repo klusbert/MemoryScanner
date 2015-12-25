@@ -16,3 +16,12 @@ E:\Visual Studiio\MemoryScanner\MemoryScanner\obj\Debug\MemoryScanner.Properties
 E:\Visual Studiio\MemoryScanner\MemoryScanner\obj\Debug\MemoryScanner.csproj.GenerateResource.Cache
 E:\Visual Studiio\MemoryScanner\MemoryScanner\bin\Debug\MemoryScanner.exe
 E:\Visual Studiio\MemoryScanner\MemoryScanner\bin\Debug\MemoryScanner.pdb
+D:\Visual Studiio\MemoryScanner\MemoryScanner\bin\Debug\MemoryScanner.exe.config
+D:\Visual Studiio\MemoryScanner\MemoryScanner\obj\Debug\MemoryScanner.exe
+D:\Visual Studiio\MemoryScanner\MemoryScanner\obj\Debug\MemoryScanner.pdb
+D:\Visual Studiio\MemoryScanner\MemoryScanner\bin\Debug\MemoryScanner.exe
+D:\Visual Studiio\MemoryScanner\MemoryScanner\bin\Debug\MemoryScanner.pdb
+D:\Visual Studiio\MemoryScanner\MemoryScanner\obj\Debug\MemoryScanner.csprojResolveAssemblyReference.cache
+D:\Visual Studiio\MemoryScanner\MemoryScanner\obj\Debug\MemoryScanner.Form1.resources
+D:\Visual Studiio\MemoryScanner\MemoryScanner\obj\Debug\MemoryScanner.Properties.Resources.resources
+D:\Visual Studiio\MemoryScanner\MemoryScanner\obj\Debug\MemoryScanner.csproj.GenerateResource.Cache

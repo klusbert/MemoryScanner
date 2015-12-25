@@ -39,12 +39,16 @@ namespace MemoryScanner.Addresses
         }
         public override void Search()
         {
-  
-            List<int> values = memScan.ScanString("Sorry, not possible.");
-            if(values.Count > 0)
+          
+            byte[] SearchBytes = new byte[] { 0x83, 0xEC, 0x0C ,0x8B ,0xCC ,0xC7 ,0x01 ,0xFF ,0x00 ,0x00 ,0x00 ,0xC7 ,0x41 ,0x04 ,0xFF ,0x00 ,0x00 ,0x00 ,0xC7 ,0x41 ,0x08 ,0xFF ,0x00 ,0x00 ,0x00 ,0x51 };
+            // List<int> values = memScan.ScanString("Sorry, not possible.");
+            List<int> values = memScan.ScanBytes(SearchBytes);
+            if (values.Count > 0)
             {
-                m_address = values[0];              
-                MyAddresses.StatusBarTime.Address = values[0] - 8;
+                
+                m_address = memRead.ReadInt32(values[0] - 4);
+
+                MyAddresses.StatusBarTime.Address = m_address - 16;
             }
          
         }

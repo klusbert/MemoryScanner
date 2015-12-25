@@ -38,6 +38,10 @@ namespace MemoryScanner
                 {
                     AddByte((byte)obj);
                 }
+                else if (obj is Int32)
+                {
+                    AddInt32((Int32)obj);
+                }
                 else if (obj is byte[])
                 {
                     AddBytes((byte[])obj);
@@ -92,6 +96,10 @@ namespace MemoryScanner
         }
 
         public void AddInt32(uint value)
+        {
+            AddBytes(BitConverter.GetBytes(value));
+        }
+        public void AddInt32(int value)
         {
             AddBytes(BitConverter.GetBytes(value));
         }

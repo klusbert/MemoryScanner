@@ -37,6 +37,12 @@ namespace MemoryScanner
         {
             return WriteBytes( address, BitConverter.GetBytes(value), 4);
         }
+        public  bool WriteString( long address, string str)
+        {
+            str += '\0';
+            byte[] bytes = System.Text.ASCIIEncoding.Default.GetBytes(str);
+            return WriteBytes( address, bytes, (uint)bytes.Length);
+        }
 
         public  byte[] ReadBytes(long address, uint bytesToRead)
         {
@@ -78,7 +84,6 @@ namespace MemoryScanner
         {
             int offset = this.ReadInt32(address +1);
             return (int)address + offset + 5;
-
         }
     }
 }

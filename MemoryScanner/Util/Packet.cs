@@ -56,6 +56,42 @@ namespace MemoryScanner.Util
         {
             return 2;
         }
+        public byte GetByte()
+        {
+            if (m_position + 1 > m_length)
+                throw new Exception("NetworkMessage try to get more bytes from a smaller buffer");
+
+            return buffer[m_position++];
+        }
+
+        public byte[] GetBytes(int count)
+        {
+            if (m_position + count > m_length)
+                throw new Exception("NetworkMessage try to get more bytes from a smaller buffer");
+
+            byte[] t = new byte[count];
+            Array.Copy(buffer, m_position, t, 0, count);
+            m_position += count;
+            return t;
+        }
+
+        public string GetString()
+        {
+            int len = (int)GetUInt16();
+            string t = System.Text.ASCIIEncoding.Default.GetString(buffer, m_position, len);
+            m_position += len;
+            return t;
+        }
+
+        public UInt16 GetUInt16()
+        {
+            return BitConverter.ToUInt16(GetBytes(2), 0);
+        }
+
+        public UInt32 GetUInt32()
+        {
+            return BitConverter.ToUInt32(GetBytes(4), 0);
+        }
 
         public void AddByte(byte value)
         {

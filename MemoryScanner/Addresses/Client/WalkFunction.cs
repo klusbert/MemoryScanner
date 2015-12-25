@@ -69,7 +69,14 @@ namespace MemoryScanner.Addresses
         }
         public override bool CheckAddress()
         {
-            return base.CheckAddress();
+            Tests.Walk walk = new Tests.Walk(memRead);
+            int x = 1;
+            int y = 0;
+            byte diag = 0;
+            diag = (byte)(Math.Abs(x) * Math.Abs(y));
+            bool worked =   walk.MakeWalk(x, y, diag);
+            walk.CleanUp();
+            return worked;
         }
     }
 }
