@@ -3,29 +3,27 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Diagnostics;
+
 namespace MemoryScanner.Addresses
 {
-    public class Health : GetAddresses 
+    public class ItemUse : GetAddresses
     {
-
         MemoryScanner memScan;
         MemoryReader memRead;
         AddressType Type;
         private int m_address;
-        public Health(MemoryReader _memRead, MemoryScanner _memScan, AddressType _type)
+        public ItemUse(MemoryReader _memRead, MemoryScanner _memScan, AddressType _type)
         {
             this.memRead = _memRead;
             this.memScan = _memScan;
             this.Type = _type;
         }
-        public override GetAddresses.AddressType AddressCategory
+        public override AddressType AddressCategory
         {
             get
             {
                 return Type;
             }
-
         }
         public override int Address
         {
@@ -40,26 +38,11 @@ namespace MemoryScanner.Addresses
         }
         public override void Search()
         {
-         
-            List<int> values = memScan.ScanString("Hit Points");
-            if(values.Count > 0)
-            {
-                
-                values = memScan.ScanInt32(values[1]);
 
-            //    values.Add(0x47e83b);
-              if (values.Count > 0)
-                {
-                    values[0] -= 1;
-                    MyAddresses.XorKey.Address = memRead.ReadInt32(values[0] + 14);
-                    MyAddresses.ManaMax.Address = MyAddresses.XorKey.Address + 4;
-
-                    MyAddresses.Mana.Address = memRead.ReadInt32(values[0] + 276);
-                    m_address = memRead.ReadInt32(values[0] + 20);
-                }
-                  
-            }
-           
+            byte[] SearchBytes = new byte[] { 0xB9, 0x82, 0x00, 0x00, 0x00, 0xE8 };
+            List<int> values = memScan.ScanBytes(SearchBytes);
+            int i = memRead.GetFunctionStart(values[0]);
+            m_address = i;
         }
         public override string GetString()
         {
@@ -75,12 +58,13 @@ namespace MemoryScanner.Addresses
             else
             {
                 val = Address;
-            }          
-            return "HitPoints = 0x" + val.ToString("X");
+            }
+            return "ItemUse = 0x" + val.ToString("X");
         }
         public override bool CheckAddress()
         {
             return base.CheckAddress();
         }
+
     }
 }

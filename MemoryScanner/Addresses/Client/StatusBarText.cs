@@ -48,7 +48,7 @@ namespace MemoryScanner.Addresses
                 
                 m_address = memRead.ReadInt32(values[0] - 4);
 
-                MyAddresses.StatusBarTime.Address = m_address - 16;
+               // MyAddresses.StatusBarTime.Address = m_address - 12;
             }
          
         }

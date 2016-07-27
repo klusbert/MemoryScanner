@@ -22,7 +22,9 @@ namespace MemoryScanner.Addresses
        public static Addresses.SendPacket SendPacket;
        public static Addresses.Health Health;
        public static Addresses.XorKey XorKey;
+       public static Addresses.ManaMax ManaMax;
        public static Addresses.Mana Mana;
+       public static Addresses.Cap Cap;
        public static Addresses.PlayerId PlayerId;
        public static Addresses.PlayerX PlayerX;
        public static Addresses.PlayerY PlayerY;
@@ -47,5 +49,10 @@ namespace MemoryScanner.Addresses
        public static Addresses.OutgoingBuffer OutGoingBuffer;
        public static Addresses.OutGoingPacketLen OutGoingPacketLen;
        public static Addresses.Xtea XTEA;
+       public static Addresses.Attack AttackFunction;
+       public static Addresses.SpeakFunction SpeakFunciton;
+       public static Addresses.Ping PingAddress;
+       public static Addresses.ItemMove ItemMoveFunc;
+       public static Addresses.ItemUse ItemUseFunc;
     }
 }

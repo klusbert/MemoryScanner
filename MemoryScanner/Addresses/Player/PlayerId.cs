@@ -47,9 +47,9 @@ namespace MemoryScanner.Addresses
             {
                 int playerId = memRead.ReadInt32(values[1] - 4);
     
-                MyAddresses.PlayerX.Address = playerId + 12;
-                MyAddresses.PlayerY.Address = playerId + 16;
-                MyAddresses.PlayerZ.Address = playerId + 20;
+         //       MyAddresses.PlayerX.Address = playerId + 4;
+          //      MyAddresses.PlayerY.Address = playerId + 8;
+           //     MyAddresses.PlayerZ.Address = playerId + 12;
                 MyAddresses.RedSqare.Address = memRead.ReadInt32(values[1] + 49);
                 m_address = playerId;         
             }          

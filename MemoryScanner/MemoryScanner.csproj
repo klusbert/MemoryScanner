@@ -60,6 +60,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Addresses\Client\GuiPointer.cs" />
+    <Compile Include="Addresses\Client\Ping.cs" />
+    <Compile Include="Addresses\Internal Functions\Attack.cs" />
+    <Compile Include="Addresses\Internal Functions\ItemMove.cs" />
+    <Compile Include="Addresses\Internal Functions\ItemUse.cs" />
+    <Compile Include="Addresses\Internal Functions\SpeakFunction.cs" />
     <Compile Include="Addresses\MyAddresses.cs" />
     <Compile Include="Addresses\Packet\AddPacketByte.cs" />
     <Compile Include="Addresses\Packet\GetNextPacket.cs" />
@@ -71,6 +76,8 @@
     <Compile Include="Addresses\Client\NopFps.cs" />
     <Compile Include="Addresses\Packet\OutgoingBuffer.cs" />
     <Compile Include="Addresses\Packet\OutGoingPacketLen.cs" />
+    <Compile Include="Addresses\Player\Cap.cs" />
+    <Compile Include="Addresses\Player\ManaMax.cs" />
     <Compile Include="Addresses\Player\PlayerY.cs" />
     <Compile Include="Addresses\Player\PlayerZ.cs" />
     <Compile Include="Addresses\Player\AttackCount.cs" />
@@ -106,6 +113,7 @@
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
+    <Compile Include="Tests\Container\Inventory.cs" />
     <Compile Include="Tests\Packets\PacketListnerClient.cs" />
     <Compile Include="Tests\Packets\PacketListnerServer.cs" />
     <Compile Include="Tests\Client\PrintText.cs" />
@@ -162,6 +170,7 @@
       <Install>false</Install>
     </BootstrapperPackage>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

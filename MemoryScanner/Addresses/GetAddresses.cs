@@ -18,6 +18,8 @@ namespace MemoryScanner.Addresses
             Container=4,
             Packet = 5,
             None =6,
+            InternalFunction =7,
+            TextDisplay = 8
         }
         public virtual AddressType AddressCategory
         {

@@ -38,7 +38,22 @@ namespace MemoryScanner.Addresses
             }
         }
         public override void Search()
-        {            
+        {
+            byte[] SearchBytes = new byte[] { 0x89, 0x65, 0xF0, 0x33, 0xDB, 0x89, 0x9D, 0xBC, 0xFE, 0xFF, 0xFF, 0x89, 0x5D, 0xFC, 0xA1 };
+            List<int> values = memScan.ScanBytes(SearchBytes);
+            if (values.Count > 0)
+            {
+                int playerX = memRead.ReadInt32(values[0] + SearchBytes.Length);
+                int playerY = playerX +4;
+                int playerZ = playerX + 8;
+                m_address = playerX;
+                MyAddresses.PlayerY.Address = playerY;
+                MyAddresses.PlayerZ.Address = playerZ;
+
+
+            }
+            
+
             return;
         }
         public override string GetString()

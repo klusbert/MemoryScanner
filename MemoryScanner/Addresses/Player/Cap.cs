@@ -6,14 +6,14 @@ using System.Threading.Tasks;
 using System.Diagnostics;
 namespace MemoryScanner.Addresses
 {
-    public class Health : GetAddresses 
+    public class Cap : GetAddresses
     {
 
         MemoryScanner memScan;
         MemoryReader memRead;
         AddressType Type;
         private int m_address;
-        public Health(MemoryReader _memRead, MemoryScanner _memScan, AddressType _type)
+        public Cap(MemoryReader _memRead, MemoryScanner _memScan, AddressType _type)
         {
             this.memRead = _memRead;
             this.memScan = _memScan;
@@ -40,26 +40,14 @@ namespace MemoryScanner.Addresses
         }
         public override void Search()
         {
-         
-            List<int> values = memScan.ScanString("Hit Points");
-            if(values.Count > 0)
+
+            List<int> values = memScan.ScanString("Capacity");
+            if (values.Count > 0)
             {
-                
-                values = memScan.ScanInt32(values[1]);
-
-            //    values.Add(0x47e83b);
-              if (values.Count > 0)
-                {
-                    values[0] -= 1;
-                    MyAddresses.XorKey.Address = memRead.ReadInt32(values[0] + 14);
-                    MyAddresses.ManaMax.Address = MyAddresses.XorKey.Address + 4;
-
-                    MyAddresses.Mana.Address = memRead.ReadInt32(values[0] + 276);
-                    m_address = memRead.ReadInt32(values[0] + 20);
-                }
-                  
+                values = memScan.ScanInt32(values[3]);
+                m_address = memRead.ReadInt32(values[0] + 21);
             }
-           
+
         }
         public override string GetString()
         {
@@ -75,8 +63,8 @@ namespace MemoryScanner.Addresses
             else
             {
                 val = Address;
-            }          
-            return "HitPoints = 0x" + val.ToString("X");
+            }
+            return "Cap = 0x" + val.ToString("X");
         }
         public override bool CheckAddress()
         {

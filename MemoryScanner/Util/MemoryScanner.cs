@@ -18,10 +18,12 @@ namespace MemoryScanner{
         public int MemoryStarts;
         public int MemoryEnds;
         public int BaseAddress;
+        public MemoryReader memread;
         public MemoryScanner(Process _process)
         {
             Process = _process;
             StoreMemoryBuffer();
+            memread = new MemoryReader(_process);
           
         }
        public void StoreMemoryBuffer()
@@ -51,6 +53,10 @@ namespace MemoryScanner{
            return result;
 
        }
+       public List<int>ScanByte(byte value)
+       {
+           return ScanBytes(new byte[] { value });
+       }
        public List<int> ScanInt16(short value)
        {
            return ScanBytes(BitConverter.GetBytes(value));
@@ -59,10 +65,31 @@ namespace MemoryScanner{
        {
            return ScanBytes(BitConverter.GetBytes(value));
        }
+
        public List<int> ScanString(string value)
        {
            byte[] bytes = System.Text.ASCIIEncoding.Default.GetBytes(value);
            return ScanBytes(bytes);
+       }
+       public List<int> FindRefencesTo(long address)
+       {
+           List<int> var = new List<int>();
+           List<int> values = ScanByte(0xE8);
+           foreach (int adr in values)
+           {
+               int callOffset =adr+ memread.ReadInt32(adr +1) +5;
+               if(callOffset ==address)
+               {
+                   var.Add(adr);
+               }
+           }
+           return var;
+
+       }
+       public List<int>ScanCalls(int CallAddress)
+       {
+
+           return null;
        }
        private byte[] GetData(int offset,int len)
        {

@@ -56,7 +56,7 @@ namespace MemoryScanner.Addresses
             {
                 val = Address;
             }            
-            return "HitPoints = 0x" + val.ToString("X");
+            return "Mana = 0x" + val.ToString("X");
         }
         public override bool CheckAddress()
         {

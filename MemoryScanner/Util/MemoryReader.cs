@@ -85,5 +85,22 @@ namespace MemoryScanner
             int offset = this.ReadInt32(address +1);
             return (int)address + offset + 5;
         }
+   
+      public int GetFunctionStart(long address)
+        {
+            byte[] SearchBytes = new byte[] { 0xCC, 0x55  };
+            long adr = address;
+          while(true)
+          {
+              byte[] val = ReadBytes(adr, 2);
+              if (Enumerable.SequenceEqual(SearchBytes,val))
+              {
+                  return (int)adr +1;
+              }
+              adr -= 1;
+          }
+            return 0;
+
+        }
     }
 }

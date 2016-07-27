@@ -23,7 +23,7 @@ namespace MemoryScanner.Tests
 
         private int GetMainThread()
         {
-            if (m_tibiaThread > 0) { return m_tibiaThread; }    
+            if (m_tibiaThread > 0) { return m_tibiaThread; }
 
             ProcessThreadCollection Threads = tProcess.Threads;
             if (Threads != null)
@@ -86,14 +86,14 @@ namespace MemoryScanner.Tests
 
             cv.AddByte(0xC3);//ret
             System.Windows.Forms.Clipboard.SetText(CodeCave.ToString("X"));
-      
+
             memRead.WriteBytes(CodeCave.ToInt32(), cv.Data, (uint)cv.Data.Length);
-         
+
             IntPtr hThread = WinApi.CreateRemoteThread(tProcessHandle, IntPtr.Zero, 0, CodeCave, IntPtr.Zero, 0, IntPtr.Zero);
             WinApi.WaitForSingleObject(hThread, 0xFFFFFFFF);
             WinApi.CloseHandle(hThread);
-            WinApi.VirtualFreeEx(tProcessHandle, CodeCave, 1024, WinApi.AllocationType.Release);         
-   
+            WinApi.VirtualFreeEx(tProcessHandle, CodeCave, 1024, WinApi.AllocationType.Release);
+
             memRead.WriteUInt32(Addresses.MyAddresses.OutGoingPacketLen.Address, OldPackelen);
             memRead.WriteBytes(Addresses.MyAddresses.OutGoingBuffer.Address, OldPacket, (uint)OldPackelen);
 

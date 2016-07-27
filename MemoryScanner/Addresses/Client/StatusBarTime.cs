@@ -40,7 +40,14 @@ namespace MemoryScanner.Addresses
         }
         public override void Search()
         {
-            
+            byte[] SearchBytes = new byte[] { 0xC7, 0x45, 0xFC, 0xFF, 0xFF, 0xFF, 0xFF, 0xC7, 0x85, 0x90, 0xFB, 0xFF, 0xFF, 0x00, 0x00, 0x00, 0x00, 0xC7, 0x45, 0xFC, 0x0B, 0x00, 0x00, 0x00, 0x83, 0x3D };
+            List<int> values = memScan.ScanBytes(SearchBytes);
+            if (values.Count > 0)
+            {
+                // got it
+                int adr = memRead.ReadInt32(values[0] + SearchBytes.Length);
+                m_address = adr;
+            }
         }
         public override string GetString()
         {
