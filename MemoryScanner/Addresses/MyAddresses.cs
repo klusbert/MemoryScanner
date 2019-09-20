@@ -8,13 +8,22 @@ namespace MemoryScanner.Addresses
 {
    public static class MyAddresses
     {
+        public static int IgnoreReadClientPacketAddress;
+       public static Addresses.Level Level;
+
+       public static Addresses.InventoryStart Inventory;
        public static Addresses.AttackCount AttackCount;
+       public static Addresses.lastSeenID LastSeenId;
+       public static Addresses.Food Food;
+       public static Addresses.PeekMessageA PeekMessageA;
        public static Addresses.GuiPointer GuiPointer;
        public static Addresses.CreatePacket CreatePacket;
        public static Addresses.AddPacketByte AddPacketByte;
        public static Addresses.Experience Experience;
        public static Addresses.MapPointer MapPointer;
        public static Addresses.MapArray MapArray;
+        public static Addresses.MiniMap MiniMap;
+
        public static Addresses.FullLight FullLight;
        public static Addresses.StepTile StepTile;
        public static Addresses.Mc Mc;
@@ -30,6 +39,7 @@ namespace MemoryScanner.Addresses
        public static Addresses.PlayerY PlayerY;
        public static Addresses.PlayerZ PlayerZ;
        public static Addresses.RedSquare RedSqare;
+       public static Addresses.PlayerFlags PlayerFlags;
        public static Addresses.GetNextPacket GetnextPacket;
        public static Addresses.ParseFunction ParseFunction;
        public static Addresses.Status Status;

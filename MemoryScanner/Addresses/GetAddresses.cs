@@ -39,7 +39,10 @@ namespace MemoryScanner.Addresses
                 value = 0;
             }
         }
-
+       public virtual string Name
+        {
+            get { return ""; }
+        }
         public virtual bool CheckAddress()
         {
             return true;

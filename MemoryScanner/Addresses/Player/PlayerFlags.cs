@@ -6,13 +6,13 @@ using System.Threading.Tasks;
 using System.Diagnostics;
 namespace MemoryScanner.Addresses
 {
-    public class ShowFPS : GetAddresses
+    public class PlayerFlags : GetAddresses
     {
         MemoryScanner memScan;
         MemoryReader memRead;
         AddressType Type;
         private int m_address;
-        public ShowFPS(MemoryReader _memRead, MemoryScanner _memScan, AddressType _type)
+        public PlayerFlags(MemoryReader _memRead, MemoryScanner _memScan, AddressType _type)
         {
             this.memRead = _memRead;
             this.memScan = _memScan;
@@ -37,20 +37,23 @@ namespace MemoryScanner.Addresses
                 m_address = value;
             }
         }
+        public override string Name
+        {
+            get
+            {
+                return "PlayerFlags";
+            }
+        }
+
         public override void Search()
         {
-        
-            byte[] SearchBytes = new byte[] { 0x8B, 0x01, 0xFF, 0x71, 0x18, 0xFF, 0x71, 0x14, 0x6A, 0x01, 0xFF, 0x50, 0x4C };
-            List<int> values = memScan.ScanBytes(SearchBytes);
+            byte[] SearchBytes = new byte[] { 0x8B, 0xC1, 0xD1, 0xE8, 0xA8, 0x01, 0xB8, 0x01, 0x00, 0x00 };
+            List<int> values = memScan.ScanBytes(SearchBytes);//MOV ECX,0A1
+       
             if (values.Count > 0)
             {
-                values[0] += SearchBytes.Length + 2;
-                m_address = memRead.ReadInt32(values[0]);         
-          
-                MyAddresses.NopFPS.Address = values[0] + 5;
-               
+                m_address = memRead.ReadInt32(values[0] - 4);
             }
-         
         }
         public override string GetString()
         {
@@ -66,12 +69,13 @@ namespace MemoryScanner.Addresses
             else
             {
                 val = Address;
-            }    
-            return "ShowFPS = 0x" + val.ToString("X");
+            }
+            return Name + " = 0x" + val.ToString("X");
         }
         public override bool CheckAddress()
         {
             return base.CheckAddress();
         }
+
     }
 }

@@ -38,6 +38,13 @@ namespace MemoryScanner.Addresses
                 m_address = value;
             }
         }
+        public override string Name
+        {
+            get
+            {
+                return "MC";
+            }
+        }
         public override void Search()
         {      
             List<int> values = memScan.ScanString("TibiaPlayerMutex");
@@ -66,8 +73,8 @@ namespace MemoryScanner.Addresses
             else
             {
                 val = Address;
-            }    
-            return "Mc = 0x" + val.ToString("X");
+            }
+            return Name + " = 0x" + val.ToString("X");
         }
         public override bool CheckAddress()
         {

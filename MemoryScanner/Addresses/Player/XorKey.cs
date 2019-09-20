@@ -37,6 +37,13 @@ namespace MemoryScanner.Addresses
                 m_address = value;
             }
         }
+        public override string Name
+        {
+            get
+            {
+                return "XOR";
+            }
+        }
         public override void Search()
         {
                        
@@ -55,9 +62,9 @@ namespace MemoryScanner.Addresses
             else
             {
                 val = Address;
-            }        
+            }
 
-            return "XorKey = 0x" + val.ToString("X");
+            return Name + " = 0x" + val.ToString("X");
         }
         public override bool CheckAddress()
         {

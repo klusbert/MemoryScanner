@@ -38,6 +38,13 @@ namespace MemoryScanner.Addresses
                 m_address = value;
             }
         }
+        public override string Name
+        {
+            get
+            {
+                return "PlayerY";
+            }
+        }
         public override void Search()
         {            
             return;
@@ -56,8 +63,8 @@ namespace MemoryScanner.Addresses
             else
             {
                 val = Address;
-            }    
-            return "Y = 0x" + val.ToString("X");
+            }
+            return Name + " = 0x" + val.ToString("X");
         }
         public override bool CheckAddress()
         {

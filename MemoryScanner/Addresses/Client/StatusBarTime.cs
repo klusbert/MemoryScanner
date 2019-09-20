@@ -38,6 +38,13 @@ namespace MemoryScanner.Addresses
                 m_address = value;
             }
         }
+        public override string Name
+        {
+            get
+            {
+                return "StatusBarTime";
+            }
+        }
         public override void Search()
         {
             byte[] SearchBytes = new byte[] { 0xC7, 0x45, 0xFC, 0xFF, 0xFF, 0xFF, 0xFF, 0xC7, 0x85, 0x90, 0xFB, 0xFF, 0xFF, 0x00, 0x00, 0x00, 0x00, 0xC7, 0x45, 0xFC, 0x0B, 0x00, 0x00, 0x00, 0x83, 0x3D };
@@ -63,8 +70,8 @@ namespace MemoryScanner.Addresses
             else
             {
                 val = Address;
-            }    
-            return "StatusBarTime = 0x" + val.ToString("X");
+            }
+            return Name + " = 0x" + val.ToString("X");
         }
         public override bool CheckAddress()
         {

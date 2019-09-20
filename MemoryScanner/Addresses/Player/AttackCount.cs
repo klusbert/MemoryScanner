@@ -38,6 +38,13 @@ namespace MemoryScanner.Addresses
                 m_address = value;
             }
         }
+        public override string Name
+        {
+            get
+            {
+                return "AttackCount";
+            }
+        }
         public override void Search()
         {      
             byte[] SearchBytes = new byte[] { 0xB9, 0xA1, 0x00,0x00, 0x00, 0xE8 };     
@@ -63,8 +70,8 @@ namespace MemoryScanner.Addresses
             else
             {
                 val = Address;
-            }    
-            return "AttackCount = 0x" + val.ToString("X");
+            }
+            return Name + " = 0x" + val.ToString("X");
         }
         public override bool CheckAddress()
         {

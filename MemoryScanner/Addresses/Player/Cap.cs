@@ -38,6 +38,13 @@ namespace MemoryScanner.Addresses
                 m_address = value;
             }
         }
+        public override string Name
+        {
+            get
+            {
+                return "Cap";
+            }
+        }
         public override void Search()
         {
 
@@ -45,7 +52,7 @@ namespace MemoryScanner.Addresses
             if (values.Count > 0)
             {
                 values = memScan.ScanInt32(values[3]);
-                m_address = memRead.ReadInt32(values[0] + 21);
+                m_address = memRead.ReadInt32(values[0] + 14);
             }
 
         }
@@ -64,7 +71,7 @@ namespace MemoryScanner.Addresses
             {
                 val = Address;
             }
-            return "Cap = 0x" + val.ToString("X");
+            return Name + " = 0x" + val.ToString("X");
         }
         public override bool CheckAddress()
         {

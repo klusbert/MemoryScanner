@@ -25,8 +25,8 @@ namespace MemoryScanner
         Process p;
         List<Addresses.GetAddresses> list;
         Tests.PacketListnerServer packetlistner;
-        Tests.PacketListnerClient packetlistnerOutgoing;
-
+        public Tests.PacketListnerClient packetlistnerOutgoing;
+        Tests.Container.Inventory Inventory;
 
 
         private void Form1_Load(object sender, EventArgs e)
@@ -51,6 +51,7 @@ namespace MemoryScanner
             }
             packetlistner = new Tests.PacketListnerServer(memRead);
             packetlistnerOutgoing = new Tests.PacketListnerClient(memRead);
+            Inventory = new Tests.Container.Inventory(memRead);
             CheckForIllegalCrossThreadCalls = false;
             SetUp();
             }
@@ -65,34 +66,41 @@ namespace MemoryScanner
            
         private void SetUp()
         {
+
+            Addresses.MyAddresses.Food = new Addresses.Food(memRead, memScan, Addresses.GetAddresses.AddressType.Player);
+            Addresses.MyAddresses.Inventory = new Addresses.InventoryStart(memRead, memScan, Addresses.GetAddresses.AddressType.Client);
+
+            Addresses.MyAddresses.LastSeenId = new Addresses.lastSeenID(memRead, memScan, Addresses.GetAddresses.AddressType.Client);
             Addresses.MyAddresses.AttackCount = new Addresses.AttackCount(memRead, memScan, Addresses.GetAddresses.AddressType.Player);
             Addresses.MyAddresses.GuiPointer = new Addresses.GuiPointer(memRead, memScan, Addresses.GetAddresses.AddressType.Client);
             Addresses.MyAddresses.CreatePacket  = new Addresses.CreatePacket(memRead, memScan, Addresses.GetAddresses.AddressType.Packet);
             Addresses.MyAddresses.AddPacketByte  = new Addresses.AddPacketByte(memRead, memScan, Addresses.GetAddresses.AddressType.Packet);
             Addresses.MyAddresses.Experience  = new Addresses.Experience(memRead, memScan, Addresses.GetAddresses.AddressType.Player);
+            Addresses.MyAddresses.Level = new Addresses.Level(memRead, memScan, Addresses.GetAddresses.AddressType.Player);
             Addresses.MyAddresses.MapPointer  = new Addresses.MapPointer(memRead, memScan, Addresses.GetAddresses.AddressType.Map);
             Addresses.MyAddresses.MapArray  = new Addresses.MapArray(memRead, memScan, Addresses.GetAddresses.AddressType.Map);
+            Addresses.MyAddresses.MiniMap = new Addresses.MiniMap(memRead, memScan, Addresses.GetAddresses.AddressType.Map);
             Addresses.MyAddresses.FullLight  = new Addresses.FullLight(memRead, memScan, Addresses.GetAddresses.AddressType.Map);
             Addresses.MyAddresses.StepTile  = new Addresses.StepTile(memRead, memScan, Addresses.GetAddresses.AddressType.Map);
             Addresses.MyAddresses.Mc  = new Addresses.Mc(memRead, memScan, Addresses.GetAddresses.AddressType.Client);
-            Addresses.MyAddresses.WalkFunction  = new Addresses.WalkFunction(memRead, memScan, Addresses.GetAddresses.AddressType.Client);
+            Addresses.MyAddresses.WalkFunction  = new Addresses.WalkFunction(memRead, memScan, Addresses.GetAddresses.AddressType.InternalFunction);
             Addresses.MyAddresses.SendPacket  = new Addresses.SendPacket(memRead, memScan, Addresses.GetAddresses.AddressType.Packet);
             Addresses.MyAddresses.Health  = new Addresses.Health(memRead, memScan, Addresses.GetAddresses.AddressType.Player);
             Addresses.MyAddresses.XorKey  = new Addresses.XorKey(memRead, memScan, Addresses.GetAddresses.AddressType.Player);
+            Addresses.MyAddresses.ManaMax = new Addresses.ManaMax(memRead, memScan, Addresses.GetAddresses.AddressType.Player);
+            Addresses.MyAddresses.PeekMessageA = new Addresses.PeekMessageA(memRead, memScan, Addresses.GetAddresses.AddressType.Client);
             Addresses.MyAddresses.Mana  = new Addresses.Mana(memRead, memScan, Addresses.GetAddresses.AddressType.Player);
             Addresses.MyAddresses.PlayerId  = new Addresses.PlayerId(memRead, memScan, Addresses.GetAddresses.AddressType.Player);
             Addresses.MyAddresses.PlayerX  = new Addresses.PlayerX(memRead, memScan, Addresses.GetAddresses.AddressType.Player);
             Addresses.MyAddresses.PlayerY  = new Addresses.PlayerY(memRead, memScan, Addresses.GetAddresses.AddressType.Player);
             Addresses.MyAddresses.PlayerZ  = new Addresses.PlayerZ(memRead, memScan, Addresses.GetAddresses.AddressType.Player);
             Addresses.MyAddresses.RedSqare  = new Addresses.RedSquare(memRead, memScan, Addresses.GetAddresses.AddressType.Player);
+            Addresses.MyAddresses.Cap = new Addresses.Cap(memRead, memScan, Addresses.GetAddresses.AddressType.Player);
             Addresses.MyAddresses.GetnextPacket  = new Addresses.GetNextPacket(memRead, memScan, Addresses.GetAddresses.AddressType.Packet);
             Addresses.MyAddresses.ParseFunction  = new Addresses.ParseFunction(memRead, memScan, Addresses.GetAddresses.AddressType.Packet);
             Addresses.MyAddresses.Status  = new Addresses.Status(memRead, memScan, Addresses.GetAddresses.AddressType.Client);
             Addresses.MyAddresses.ReciveStream  = new Addresses.ReciveStream(memRead, memScan, Addresses.GetAddresses.AddressType.Packet);
-            Addresses.MyAddresses.PrintFPS  = new Addresses.PrintFps(memRead, memScan, Addresses.GetAddresses.AddressType.Client);
-            Addresses.MyAddresses.PrintText  = new Addresses.PrintText(memRead, memScan, Addresses.GetAddresses.AddressType.Client);
-            Addresses.MyAddresses.ShowFPS  = new Addresses.ShowFPS(memRead, memScan, Addresses.GetAddresses.AddressType.Client);
-            Addresses.MyAddresses.NopFPS  = new Addresses.NopFps(memRead, memScan, Addresses.GetAddresses.AddressType.Client);
+            Addresses.MyAddresses.PlayerFlags = new Addresses.PlayerFlags(memRead, memScan, Addresses.GetAddresses.AddressType.Player);
             Addresses.MyAddresses.BlistStart  = new Addresses.BlistStart(memRead, memScan, Addresses.GetAddresses.AddressType.BattleList);
             Addresses.MyAddresses.BlistStep  = new Addresses.BlistStep(memRead, memScan, Addresses.GetAddresses.AddressType.BattleList);
             Addresses.MyAddresses.MaxCreatures  = new Addresses.MaxCreatures(memRead, memScan, Addresses.GetAddresses.AddressType.BattleList);
@@ -104,6 +112,16 @@ namespace MemoryScanner
             Addresses.MyAddresses.OutGoingBuffer  = new Addresses.OutgoingBuffer(memRead, memScan, Addresses.GetAddresses.AddressType.Packet);
             Addresses.MyAddresses.OutGoingPacketLen  = new Addresses.OutGoingPacketLen(memRead, memScan, Addresses.GetAddresses.AddressType.Packet);
             Addresses.MyAddresses.XTEA  = new Addresses.Xtea(memRead, memScan, Addresses.GetAddresses.AddressType.Packet);
+            Addresses.MyAddresses.AttackFunction = new Addresses.Attack(memRead, memScan, Addresses.GetAddresses.AddressType.InternalFunction);
+            Addresses.MyAddresses.SpeakFunciton = new Addresses.SpeakFunction(memRead, memScan, Addresses.GetAddresses.AddressType.InternalFunction);
+            Addresses.MyAddresses.ItemMoveFunc = new Addresses.ItemMove(memRead, memScan, Addresses.GetAddresses.AddressType.InternalFunction);
+            Addresses.MyAddresses.ItemUseFunc = new Addresses.ItemUse(memRead, memScan, Addresses.GetAddresses.AddressType.InternalFunction);
+            Addresses.MyAddresses.PingAddress = new Addresses.Ping(memRead, memScan, Addresses.GetAddresses.AddressType.Client);
+
+            Addresses.MyAddresses.PrintFPS = new Addresses.PrintFps(memRead, memScan, Addresses.GetAddresses.AddressType.TextDisplay);
+            Addresses.MyAddresses.PrintText = new Addresses.PrintText(memRead, memScan, Addresses.GetAddresses.AddressType.TextDisplay);
+            Addresses.MyAddresses.ShowFPS = new Addresses.ShowFPS(memRead, memScan, Addresses.GetAddresses.AddressType.TextDisplay);
+            Addresses.MyAddresses.NopFPS = new Addresses.NopFps(memRead, memScan, Addresses.GetAddresses.AddressType.TextDisplay);
         }
         private void button1_Click(object sender, EventArgs e)
         {       
@@ -111,19 +129,26 @@ namespace MemoryScanner
             list.Clear();
             StartSearch();
             groupBox1.Enabled = true;
+
+            
         }
        
   
         private void StartSearch()
         {
-
+            list.Add(Addresses.MyAddresses.Inventory);
+            list.Add(Addresses.MyAddresses.LastSeenId);
+            list.Add(Addresses.MyAddresses.Food);
             list.Add(Addresses.MyAddresses.AttackCount);
+            list.Add(Addresses.MyAddresses.PeekMessageA);
             list.Add(Addresses.MyAddresses.GuiPointer);
             list.Add(Addresses.MyAddresses.CreatePacket);
             list.Add(Addresses.MyAddresses.AddPacketByte);
             list.Add(Addresses.MyAddresses.Experience);
+            list.Add(Addresses.MyAddresses.Level);
             list.Add(Addresses.MyAddresses.MapPointer);
             list.Add(Addresses.MyAddresses.MapArray);
+            list.Add(Addresses.MyAddresses.MiniMap);
             list.Add(Addresses.MyAddresses.FullLight);
             list.Add(Addresses.MyAddresses.StepTile);
             list.Add(Addresses.MyAddresses.Mc);
@@ -132,11 +157,14 @@ namespace MemoryScanner
             list.Add(Addresses.MyAddresses.Health);
             list.Add(Addresses.MyAddresses.XorKey);
             list.Add(Addresses.MyAddresses.Mana);
+            list.Add(Addresses.MyAddresses.ManaMax);
+            list.Add(Addresses.MyAddresses.Cap);
             list.Add(Addresses.MyAddresses.PlayerId);
             list.Add(Addresses.MyAddresses.PlayerX);
             list.Add(Addresses.MyAddresses.PlayerY);
             list.Add(Addresses.MyAddresses.PlayerZ);
             list.Add(Addresses.MyAddresses.RedSqare);
+            list.Add(Addresses.MyAddresses.PlayerFlags);
             list.Add(Addresses.MyAddresses.GetnextPacket);
             list.Add(Addresses.MyAddresses.ParseFunction);
             list.Add(Addresses.MyAddresses.Status);
@@ -156,7 +184,11 @@ namespace MemoryScanner
             list.Add(Addresses.MyAddresses.OutGoingBuffer);
             list.Add(Addresses.MyAddresses.OutGoingPacketLen);
             list.Add(Addresses.MyAddresses.XTEA);
-
+            list.Add(Addresses.MyAddresses.AttackFunction);
+            list.Add(Addresses.MyAddresses.SpeakFunciton);
+            list.Add(Addresses.MyAddresses.ItemUseFunc);
+            list.Add(Addresses.MyAddresses.ItemMoveFunc);
+            list.Add(Addresses.MyAddresses.PingAddress);
             TreeNode ParentNode = new TreeNode();
             ParentNode.Text = p.MainModule.FileVersionInfo.FileVersion;
 
@@ -166,13 +198,21 @@ namespace MemoryScanner
             TreeNode MapParent = new TreeNode();
             TreeNode ContainerParrent = new TreeNode();
             TreeNode PacketParrent = new TreeNode();
-            ClientParent.Text = "ClientAddresses";
-           
+            TreeNode InternalFunctions = new TreeNode();
+            TreeNode TextDisplay = new TreeNode();
+
+
+            ClientParent.Text = "ClientAddresses";           
             BattlelistParent.Text = "BattlistAddress";
             PlayerParent.Text = "PlayerAddresses";
             MapParent.Text = "MapAddresses";
             ContainerParrent.Text = "ContainerAddresses";
-            PacketParrent.Text = "Packet Addresses";
+            PacketParrent.Text = "PacketAddresses";
+            InternalFunctions.Text = "InternalFunctions";
+            TextDisplay.Text = "TextDisplay";
+
+
+
             for (int i = 0; i < list.Count; i++)
             {
              //   listBox1.Items.Add(list[i].GetString());
@@ -207,9 +247,19 @@ namespace MemoryScanner
                        ContainerParrent.Nodes.Add(n);
                     break;
                     case Addresses.GetAddresses.AddressType.Packet:
-                        n = new TreeNode();
+                       n = new TreeNode();
                        n.Text = val.GetString();
                        PacketParrent.Nodes.Add(n);
+                    break;
+                    case Addresses.GetAddresses.AddressType.InternalFunction:
+                    n = new TreeNode();
+                    n.Text = val.GetString();
+                    InternalFunctions.Nodes.Add(n);
+                    break;
+                    case Addresses.GetAddresses.AddressType.TextDisplay:
+                    n = new TreeNode();
+                    n.Text = val.GetString();
+                    TextDisplay.Nodes.Add(n);
                     break;
                 }
                
@@ -220,7 +270,13 @@ namespace MemoryScanner
             ParentNode.Nodes.Add(MapParent);
             ParentNode.Nodes.Add(ContainerParrent);
             ParentNode.Nodes.Add(PacketParrent);
+            ParentNode.Nodes.Add(InternalFunctions);
+            ParentNode.Nodes.Add(TextDisplay);
             treeView1.Nodes.Add(ParentNode);
+
+          
+            List<int> values = memScan.FindRefencesTo(Addresses.MyAddresses.SendPacket.Address);
+            label15.Text = "Number Of outgoing Packettypes = " + values.Count.ToString();
             timer1.Start();
         }
 
@@ -278,7 +334,7 @@ namespace MemoryScanner
        
            if(Addresses.MyAddresses.Mc.CheckAddress())
            {
-               MessageBox.Show("Mc Address seems to work");
+               label8.Visible = true;
            }
            else
            {
@@ -356,6 +412,8 @@ namespace MemoryScanner
 
         private void timer1_Tick(object sender, EventArgs e)
         {
+            int xorKey = memRead.ReadInt32(Addresses.MyAddresses.XorKey.Address);
+
             Tests.PlayerName playerName = new Tests.PlayerName(memRead);
             label1.Text = "Connection Status = " +memRead.ReadInt32(Addresses.MyAddresses.Status.Address).ToString();
             label2.Text = "PlayerX = " + memRead.ReadInt32(Addresses.MyAddresses.PlayerX.Address).ToString();
@@ -363,13 +421,28 @@ namespace MemoryScanner
             label4.Text = "PlayerZ = " + memRead.ReadInt32(Addresses.MyAddresses.PlayerZ.Address).ToString();
             label5.Text = "PlayerId = " + memRead.ReadInt32(Addresses.MyAddresses.PlayerId.Address).ToString();
             label6.Text = "PlayerName = " + playerName.GetPlayerName();
+            label11.Text = "Ping = " + memRead.ReadInt32(Addresses.MyAddresses.PingAddress.Address).ToString();
+            label10.Text = "Containers Count " + Inventory.ContainersCount().ToString();
+
+            label12.Text = "PlayerHP = " + (memRead.ReadInt32(Addresses.MyAddresses.Health.Address) ^ xorKey).ToString();
+            label13.Text = "PlayerMana = " + (memRead.ReadInt32(Addresses.MyAddresses.Mana.Address) ^ xorKey).ToString();
+            label14.Text = "PlayerManaMax = " + (memRead.ReadInt32(Addresses.MyAddresses.ManaMax.Address) ^ xorKey).ToString();
+
             int num = memRead.ReadInt32(Addresses.MyAddresses.GuiPointer.Address);
-            num = memRead.ReadInt32(num + 0x30);
-         
+            num = memRead.ReadInt32(num + 0x30);         
             Size clientSize = new Size(memRead.ReadInt32(num + 0x38), memRead.ReadInt32(num + 0x3C));
             label7.Text = "Client Size = " + clientSize.ToString();
+            label16.Text = "PlayerXP = " + memRead.ReadInt32(Addresses.MyAddresses.Experience.Address).ToString();
+            label17.Text = "PlayerFlags = "+memRead.ReadInt32(Addresses.MyAddresses.PlayerFlags.Address).ToString();
+            label18.Text = "Hunger = " + memRead.ReadInt32(Addresses.MyAddresses.Food.Address).ToString();
+            label19.Text = "Level = " +memRead.ReadInt32(Addresses.MyAddresses.Level.Address).ToString();
+            label20.Text = "Ammo = " + memRead.ReadInt32(Addresses.MyAddresses.Inventory.Address+4).ToString() + " count = " + memRead.ReadInt32(Addresses.MyAddresses.Inventory.Address).ToString();
         }
 
+        private void ReadContainers()
+        {
+
+        }
         private void button7_Click(object sender, EventArgs e)
         {
             memRead.WriteString(Addresses.MyAddresses.StatusBarText.Address, "This is a test");
@@ -379,7 +452,15 @@ namespace MemoryScanner
 
         private void button8_Click(object sender, EventArgs e)
         {
-            MessageBox.Show(Addresses.MyAddresses.WalkFunction.CheckAddress().ToString());
+        if(Addresses.MyAddresses.WalkFunction.CheckAddress())
+        {
+            label9.Visible = true;
+            
+        }
+        else
+        {
+            MessageBox.Show("Not working");
+        }
            
         }
 
@@ -394,9 +475,22 @@ namespace MemoryScanner
             packetlistnerOutgoing.OutGoingPacket += lst_OutGoingPacket;
             
         }
-
+        DateTime d;
+        bool first = true;
         void lst_OutGoingPacket(byte[] data)
         {
+            string str1 = "intervall ";
+            if(first)
+            {
+                d = DateTime.Now;
+
+            }
+            else
+            {
+                TimeSpan span = DateTime.Now - d;
+                str1 += span.TotalMilliseconds.ToString();
+            }
+
             string str = "";
             foreach (byte b in data)
             {
@@ -404,19 +498,58 @@ namespace MemoryScanner
             }
 
             listBox2.Items.Add(str);
+            listBox1.Items.Add(str1);
+           
         }
-
+     
         private void button10_Click(object sender, EventArgs e)
         {
-            byte[] SearchBytes = new byte[] {0xC1,0xE8,0x07,0xA8,0x01,0x74,0x0F};
+            byte[] SearchBytes = new byte[] {0x8D, 0x49, 0x00, 0x83, 0xEC, 0x20, 0x8B, 0xC4, 0x89, 0x65, 0xF0, 0x89, 0x45, 0xEC};
             List<int> values = memScan.ScanBytes(SearchBytes);
-            if(values.Count > 0)
+            if (values.Count > 0)
             {
-                int adr = values[0] -26;
-                Clipboard.SetText(adr.ToString("X"));
-                MessageBox.Show(memRead.ReadInt32(adr).ToString("X"));
+                int adr = values[0] - 6;
+                adr = memRead.ReadInt32(adr);
+                MessageBox.Show((adr +68).ToString("X"));
 
-            }
+            }       
+          
+        }
+
+        private void button11_Click(object sender, EventArgs e)
+        {
+            Inventory.GetContainers();
+        }
+
+        private void button12_Click(object sender, EventArgs e)
+        {
+            SaveFileDialog dlg = new SaveFileDialog();
+            dlg.Filter = "XML files(.xml)|*.xml|all Files(*.*)|*.*";
+            dlg.FilterIndex = 1;
+            if (dlg.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            {
+                using (XmlWriter writer = XmlWriter.Create(dlg.FileName))
+                {
+                    writer.WriteStartDocument();
+                    writer.WriteStartElement("Addresses");
+
+                    foreach (Addresses.GetAddresses adrval in list)
+                    {
+                        writer.WriteStartElement(adrval.Name);
+                                               
+                        writer.WriteElementString("Address", adrval.Address.ToString());
+          
+
+                        writer.WriteEndElement();
+                    }
+
+                    writer.WriteEndElement();
+                    writer.WriteEndDocument();
+                }
+              
+            }       
+
+            
         }
     }
 }

@@ -37,16 +37,25 @@ namespace MemoryScanner.Addresses
                 m_address = value;
             }
         }
+        public override string Name
+        {
+            get
+            {
+                return "EXP";
+            }
+        }
         public override void Search()
-        {          
-            List<int> values = memScan.ScanString("Exp.");
+        {
+            List<int> values = memScan.ScanString("Experience");
             if (values.Count > 0)
             {
                 values = memScan.ScanInt32(values[0]);
                 if (values.Count > 0)
                 {
-                    int adr = values[0] - 30;
-                    m_address = memRead.ReadInt32(adr + 1);              
+                    int adr = values[0] - 44;
+                    m_address = memRead.ReadInt32(adr);
+                    Addresses.MyAddresses.Level.Address = m_address + 16;
+
                                         
                 }
             }           
@@ -65,8 +74,8 @@ namespace MemoryScanner.Addresses
             else
             {
                 val = Address;
-            }    
-            return "Experience = 0x" + val.ToString("X");
+            }
+            return Name + " = 0x" + val.ToString("X");
         }
         public override bool CheckAddress()
         {

@@ -37,6 +37,13 @@ namespace MemoryScanner.Addresses
                 m_address = value;
             }
         }
+        public override string Name
+        {
+            get
+            {
+                return "StepCreatures";
+            }
+        }
         public override void Search()
         {
             return;
@@ -48,8 +55,8 @@ namespace MemoryScanner.Addresses
             {
                 Search();
             }
-            val = Address;             
-            return "Step = 0x" + val.ToString("X");
+            val = Address;
+            return Name + " = 0x" + val.ToString("X");
         }
         public override bool CheckAddress()
         {

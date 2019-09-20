@@ -38,6 +38,13 @@ namespace MemoryScanner.Addresses
                 m_address = value;
             }
         }
+        public override string Name
+        {
+            get
+            {
+                return "GuiPointer";
+            }
+        }
         public override void Search()
         {
             byte[] SearchBytes = new byte[] {0x8B,0x01,0x6A,0x00,0x6A,0x00,0x6A,0x01,0xFF   };
@@ -64,8 +71,8 @@ namespace MemoryScanner.Addresses
             else
             {
                 val = Address;
-            }    
-            return "GuiPointer = 0x" + val.ToString("X");
+            }
+            return Name + " = 0x" + val.ToString("X");
         }
         public override bool CheckAddress()
         {

@@ -37,6 +37,13 @@ namespace MemoryScanner.Addresses
                 m_address = value;
             }
         }
+        public override string Name
+        {
+            get
+            {
+                return "ManaMax";
+            }
+        }
         public override void Search()
         {
             return;
@@ -56,7 +63,7 @@ namespace MemoryScanner.Addresses
             {
                 val = Address;
             }
-            return "ManaMax = 0x" + val.ToString("X");
+            return Name + " = 0x" + val.ToString("X");
         }
         public override bool CheckAddress()
         {

@@ -18,6 +18,8 @@ namespace MemoryScanner.Tests
         private bool running = false;
         private byte[] OrigalBytes;
         public bool IsRunning = false;
+        public IntPtr NewSendAddress;
+
         public PacketListnerClient(MemoryReader _memread)
         {
             memRead = _memread;
@@ -30,9 +32,13 @@ namespace MemoryScanner.Tests
             //Let's get some space for our codecave         
             CodeCaveAdr = WinApi.VirtualAllocEx(TibiaHandle, IntPtr.Zero, 1024, WinApi.AllocationType.Commit | WinApi.AllocationType.Reserve, WinApi.MemoryProtection.ExecuteReadWrite);
             GotPacketAdr = WinApi.VirtualAllocEx(TibiaHandle, IntPtr.Zero, 1, WinApi.AllocationType.Commit | WinApi.AllocationType.Reserve, WinApi.MemoryProtection.ExecuteReadWrite);
+            Addresses.MyAddresses.IgnoreReadClientPacketAddress = GotPacketAdr.ToInt32();
 
-            memRead.WriteByte(GotPacketAdr.ToInt32(), 0);
+            OrigalBytes = memRead.ReadBytes(Addresses.MyAddresses.SendPacket.Address, 5);
+            NewSendAddress = CodeCaveAdr + 0x19;
           
+            memRead.WriteByte(GotPacketAdr.ToInt32(), 0);
+        
             cv.AddLine((byte)0x8b, (byte)0xd8); // store eax
 
             cv.AddLine((byte)0xc7, (byte)0x05, (UInt32)GotPacketAdr.ToInt32(), (UInt32)0x00000001); //sets gotpacket to 1
@@ -43,30 +49,36 @@ namespace MemoryScanner.Tests
             cv.AddLine((byte)0x83, (byte)0xF8, (byte)1);
             cv.AddLine((byte)0x74, (byte)0xF6);
             cv.AddLine((byte)0x8b, (byte)0xC3);
-        //    cv.AddLine((byte)0x50); 
+
+
+            cv.AddBytes(OrigalBytes);// reads the orginall 5 bytes before we jumb back
+
             cv.AddLine((byte)0xE8);
-            //cv.AddInt(((int)Addresses.MyAddresses.SendPacket.Address +17 - (CodeCaveAdr.ToInt32()) - 5) -cv.Data.Length +1);  // calls getnextPacket
-            cv.AddInt(((int)Addresses.MyAddresses.SendPacket.Address  - (CodeCaveAdr.ToInt32()) - 5) - cv.Data.Length + 1);  // calls getnextPacke
+            cv.AddInt(((int)Addresses.MyAddresses.SendPacket.Address  - (CodeCaveAdr.ToInt32())) - cv.Data.Length + 1);  // calls getnextPacke
+       
             cv.AddLine((byte)0xC3);
 
            
-            memRead.WriteBytes(CodeCaveAdr.ToInt32(), cv.Data, (uint)cv.Data.Length);
+            memRead.WriteBytes(CodeCaveAdr.ToInt32(), cv.Data, (uint)cv.Data.Length);  
             Thread t = new Thread(new ThreadStart(ReadingPacket));
             running = true;
             t.Start();
-            //ReplaceCode();
+            ReplaceCode();
             IsRunning = true;
-            System.Windows.Forms.Clipboard.SetText(CodeCaveAdr.ToString("X"));
+            System.Windows.Forms.Clipboard.SetText(GotPacketAdr.ToString("X"));
+            System.Windows.Forms.MessageBox.Show(GotPacketAdr.ToString("X"));
+
+
         }
         private void ReplaceCode()
         {
             CodeCaveHelper cv = new CodeCaveHelper();
-            cv.AddLine((byte)0xE8);
-            cv.AddInt(((int)(CodeCaveAdr.ToInt32() - Addresses.MyAddresses.SendPacket.Address + 17 - 5)));
-           // OrigalBytes = memRead.ReadBytes(Addresses.MyAddresses.SendPacket.Address + 3,(uint)cv.Data.Length);
-            memRead.WriteBytes(Addresses.MyAddresses.SendPacket.Address + 3, cv.Data, (uint)cv.Data.Length);
-          
-         
+            OrigalBytes = memRead.ReadBytes(Addresses.MyAddresses.SendPacket.Address,5);
+
+            cv.AddLine((byte)0xE9);
+            cv.AddInt(((int)(CodeCaveAdr.ToInt32() - Addresses.MyAddresses.SendPacket.Address- 5)));            
+            memRead.WriteBytes(Addresses.MyAddresses.SendPacket.Address, cv.Data, (uint)cv.Data.Length);
+            Addresses.MyAddresses.SendPacket.Address = NewSendAddress.ToInt32();
         }
         public void CleanUp()
         {

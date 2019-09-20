@@ -36,13 +36,24 @@ namespace MemoryScanner.Addresses
                 m_address = value;
             }
         }
+        public override string Name
+        {
+            get
+            {
+                return "ItemMoveFunction";
+            }
+        }
         public override void Search()
         {
 
             byte[] SearchBytes = new byte[] { 0xB9, 0x78, 0x00, 0x00, 0x00, 0xE8 };
             List<int> values = memScan.ScanBytes(SearchBytes);
-            int i = memRead.GetFunctionStart(values[0]);
-            m_address = i;
+            if(values.Count > 0)
+            {
+                int i = memRead.GetFunctionStart(values[0]);
+                m_address = i;
+            }
+            
         }
         public override string GetString()
         {
@@ -59,7 +70,7 @@ namespace MemoryScanner.Addresses
             {
                 val = Address;
             }
-            return "ItemMove = 0x" + val.ToString("X");
+            return Name + " = 0x" + val.ToString("X");
         }
         public override bool CheckAddress()
         {

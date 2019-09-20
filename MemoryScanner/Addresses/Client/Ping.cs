@@ -38,6 +38,13 @@ namespace MemoryScanner.Addresses
                 m_address = value;
             }
         }
+        public override string Name
+        {
+            get
+            {
+                return "Ping";
+            }
+        }
         public override void Search()
         {
             byte[] SearchBytes = new byte[] { 0x3D, 0xFF, 0xFF, 0xFF, 0x7F,0x0f,0x86 ,0x1A};
@@ -63,7 +70,7 @@ namespace MemoryScanner.Addresses
             {
                 val = Address;
             }
-            return "Ping = 0x" + val.ToString("X");
+            return Name + " = 0x" + val.ToString("X");
         }
         public override bool CheckAddress()
         {

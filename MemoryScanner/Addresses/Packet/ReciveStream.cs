@@ -37,6 +37,13 @@ namespace MemoryScanner.Addresses
                 m_address = value;
             }
         }
+        public override string Name
+        {
+            get
+            {
+                return "ReciveSteam";
+            }
+        }
         public override void Search()
         {          
             List<int> values = memScan.ScanString("packet size is too small even for one encrypted block");
@@ -60,8 +67,8 @@ namespace MemoryScanner.Addresses
             else
             {
                 val = Address;
-            }    
-            return "ReciveStream = 0x" + val.ToString("X");
+            }
+            return Name + " = 0x" + val.ToString("X");
         }
         public override bool CheckAddress()
         {

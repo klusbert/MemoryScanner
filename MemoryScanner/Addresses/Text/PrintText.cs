@@ -3,17 +3,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using System.Diagnostics;
 namespace MemoryScanner.Addresses
 {
-    public class NopFps : Addresses.GetAddresses
+    public class PrintText : GetAddresses
     {
         MemoryScanner memScan;
         MemoryReader memRead;
         AddressType Type;
         private int m_address;
-
-        public NopFps(MemoryReader _memRead, MemoryScanner _memScan, AddressType _type)
+        public PrintText(MemoryReader _memRead, MemoryScanner _memScan, AddressType _type)
         {
             this.memRead = _memRead;
             this.memScan = _memScan;
@@ -38,9 +37,16 @@ namespace MemoryScanner.Addresses
                 m_address = value;
             }
         }
+        public override string Name
+        {
+            get
+            {
+                return "PrintTextFunction";
+            }
+        }
         public override void Search()
         {
-                  
+           
         }
         public override string GetString()
         {
@@ -56,8 +62,8 @@ namespace MemoryScanner.Addresses
             else
             {
                 val = Address;
-            }    
-            return "NopFPS = 0x" + val.ToString("X");
+            }
+            return Name + " = 0x" + val.ToString("X");
         }
         public override bool CheckAddress()
         {

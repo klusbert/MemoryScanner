@@ -37,6 +37,13 @@ namespace MemoryScanner.Addresses
                 m_address = value;
             }
         }
+        public override string Name
+        {
+            get
+            {
+                return "MaxCreatures";
+            }
+        }
         public override void Search()
         {
             return;           
@@ -49,7 +56,8 @@ namespace MemoryScanner.Addresses
                 Search();
             }    
             val = Address;
-            return "Max = 0x" + val.ToString("X");
+          //  return "Max = 0x" + val.ToString("X");
+            return Name + " = 0x" + val.ToString("X");
         }
         public override bool CheckAddress()
         {

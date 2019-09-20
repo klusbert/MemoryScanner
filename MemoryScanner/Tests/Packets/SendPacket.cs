@@ -62,8 +62,7 @@ namespace MemoryScanner.Tests
             uint OldPackelen = memRead.ReadUInt32(Addresses.MyAddresses.OutGoingPacketLen.Address);
             byte[] OldPacket = memRead.ReadBytes(Addresses.MyAddresses.OutGoingBuffer.Address, OldPackelen);
             IntPtr CodeCave = WinApi.VirtualAllocEx(tProcessHandle, IntPtr.Zero, 1024, WinApi.AllocationType.Commit | WinApi.AllocationType.Reserve, WinApi.MemoryProtection.ExecuteReadWrite);
-
-
+      
             //createPacket
             byte packetType = (byte)packet[0];
             cv.AddLine((byte)0xb9, (UInt32)packetType);
@@ -85,11 +84,15 @@ namespace MemoryScanner.Tests
             cv.AddLine((byte)0xff, (byte)0xD0); // call eax Thanks Darkstar
 
             cv.AddByte(0xC3);//ret
-            System.Windows.Forms.Clipboard.SetText(CodeCave.ToString("X"));
 
             memRead.WriteBytes(CodeCave.ToInt32(), cv.Data, (uint)cv.Data.Length);
 
             IntPtr hThread = WinApi.CreateRemoteThread(tProcessHandle, IntPtr.Zero, 0, CodeCave, IntPtr.Zero, 0, IntPtr.Zero);
+            if(Addresses.MyAddresses.IgnoreReadClientPacketAddress > 0)
+            {
+                memRead.WriteByte(Addresses.MyAddresses.IgnoreReadClientPacketAddress, 0);//ignore this
+
+            }
             WinApi.WaitForSingleObject(hThread, 0xFFFFFFFF);
             WinApi.CloseHandle(hThread);
             WinApi.VirtualFreeEx(tProcessHandle, CodeCave, 1024, WinApi.AllocationType.Release);

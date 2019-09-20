@@ -60,11 +60,15 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Addresses\Client\GuiPointer.cs" />
+    <Compile Include="Addresses\Client\lastSeenID.cs" />
+    <Compile Include="Addresses\Client\PeekMessageA.cs" />
     <Compile Include="Addresses\Client\Ping.cs" />
     <Compile Include="Addresses\Internal Functions\Attack.cs" />
     <Compile Include="Addresses\Internal Functions\ItemMove.cs" />
     <Compile Include="Addresses\Internal Functions\ItemUse.cs" />
     <Compile Include="Addresses\Internal Functions\SpeakFunction.cs" />
+    <Compile Include="Addresses\Inventory\Inventory Start.cs" />
+    <Compile Include="Addresses\Map\MiniMap.cs" />
     <Compile Include="Addresses\MyAddresses.cs" />
     <Compile Include="Addresses\Packet\AddPacketByte.cs" />
     <Compile Include="Addresses\Packet\GetNextPacket.cs" />
@@ -73,11 +77,14 @@
     <Compile Include="Addresses\Battlelist\MaxCreatures.cs" />
     <Compile Include="Addresses\Container\ContainerPointer.cs" />
     <Compile Include="Addresses\Map\FullLight.cs" />
-    <Compile Include="Addresses\Client\NopFps.cs" />
+    <Compile Include="Addresses\Player\Level.cs" />
+    <Compile Include="Addresses\Text\NopFps.cs" />
     <Compile Include="Addresses\Packet\OutgoingBuffer.cs" />
     <Compile Include="Addresses\Packet\OutGoingPacketLen.cs" />
     <Compile Include="Addresses\Player\Cap.cs" />
+    <Compile Include="Addresses\Player\Food.cs" />
     <Compile Include="Addresses\Player\ManaMax.cs" />
+    <Compile Include="Addresses\Player\PlayerFlags.cs" />
     <Compile Include="Addresses\Player\PlayerY.cs" />
     <Compile Include="Addresses\Player\PlayerZ.cs" />
     <Compile Include="Addresses\Player\AttackCount.cs" />
@@ -95,12 +102,12 @@
     <Compile Include="Addresses\Player\XorKey.cs" />
     <Compile Include="Addresses\Player\PlayerX.cs" />
     <Compile Include="Addresses\Packet\ReciveStream.cs" />
-    <Compile Include="Addresses\Client\PrintFps.cs" />
-    <Compile Include="Addresses\Client\PrintText.cs" />
-    <Compile Include="Addresses\Client\ShowFPS.cs" />
+    <Compile Include="Addresses\Text\PrintFps.cs" />
+    <Compile Include="Addresses\Text\PrintText.cs" />
+    <Compile Include="Addresses\Text\ShowFPS.cs" />
     <Compile Include="Addresses\Battlelist\Start.cs" />
     <Compile Include="Addresses\Battlelist\Step.cs" />
-    <Compile Include="Addresses\Client\WalkFunction.cs" />
+    <Compile Include="Addresses\Internal Functions\WalkFunction.cs" />
     <Compile Include="Addresses\Packet\RecivePointer.cs" />
     <Compile Include="Addresses\Packet\SendPointer.cs" />
     <Compile Include="Addresses\Client\StatusBarText.cs" />

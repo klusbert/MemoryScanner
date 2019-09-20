@@ -37,6 +37,13 @@ namespace MemoryScanner.Addresses
                 m_address = value;
             }
         }
+        public override string Name
+        {
+            get
+            {
+                return "MapPointer";
+            }
+        }
         public override void Search()
         {            
             byte[] SearchBytes = new byte[] { 0xFF, 0x70, 0xFC, 0x8D, 0x70, 0xFC, 0x68, 0x70, 0x01, 0x00, 0x00, 0x50, 0xE8 };
@@ -63,8 +70,8 @@ namespace MemoryScanner.Addresses
             else
             {
                 val = Address;
-            }    
-            return "MapPointer = 0x" + val.ToString("X");
+            }
+            return Name + " = 0x" + val.ToString("X");
         }
         public override bool CheckAddress()
         {
