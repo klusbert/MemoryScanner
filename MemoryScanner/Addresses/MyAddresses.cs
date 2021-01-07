@@ -38,6 +38,9 @@ namespace MemoryScanner.Addresses
        public static Addresses.PlayerX PlayerX;
        public static Addresses.PlayerY PlayerY;
        public static Addresses.PlayerZ PlayerZ;
+       public static Addresses.Player.GotoX Gotox;
+       public static Addresses.Player.GotoY Gotoy;
+       public static Addresses.Player.GotoZ Gotoz;
        public static Addresses.RedSquare RedSqare;
        public static Addresses.PlayerFlags PlayerFlags;
        public static Addresses.GetNextPacket GetnextPacket;

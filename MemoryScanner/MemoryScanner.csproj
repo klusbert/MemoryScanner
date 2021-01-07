@@ -77,6 +77,9 @@
     <Compile Include="Addresses\Battlelist\MaxCreatures.cs" />
     <Compile Include="Addresses\Container\ContainerPointer.cs" />
     <Compile Include="Addresses\Map\FullLight.cs" />
+    <Compile Include="Addresses\Player\GotoX.cs" />
+    <Compile Include="Addresses\Player\GotoY.cs" />
+    <Compile Include="Addresses\Player\GotoZ.cs" />
     <Compile Include="Addresses\Player\Level.cs" />
     <Compile Include="Addresses\Text\NopFps.cs" />
     <Compile Include="Addresses\Packet\OutgoingBuffer.cs" />

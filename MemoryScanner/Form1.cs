@@ -94,6 +94,9 @@ namespace MemoryScanner
             Addresses.MyAddresses.PlayerX  = new Addresses.PlayerX(memRead, memScan, Addresses.GetAddresses.AddressType.Player);
             Addresses.MyAddresses.PlayerY  = new Addresses.PlayerY(memRead, memScan, Addresses.GetAddresses.AddressType.Player);
             Addresses.MyAddresses.PlayerZ  = new Addresses.PlayerZ(memRead, memScan, Addresses.GetAddresses.AddressType.Player);
+            Addresses.MyAddresses.Gotox = new Addresses.Player.GotoX(memRead, memScan, Addresses.GetAddresses.AddressType.Player);
+            Addresses.MyAddresses.Gotoy = new Addresses.Player.GotoY(memRead, memScan, Addresses.GetAddresses.AddressType.Player);
+            Addresses.MyAddresses.Gotoz = new Addresses.Player.GotoZ(memRead, memScan, Addresses.GetAddresses.AddressType.Player);
             Addresses.MyAddresses.RedSqare  = new Addresses.RedSquare(memRead, memScan, Addresses.GetAddresses.AddressType.Player);
             Addresses.MyAddresses.Cap = new Addresses.Cap(memRead, memScan, Addresses.GetAddresses.AddressType.Player);
             Addresses.MyAddresses.GetnextPacket  = new Addresses.GetNextPacket(memRead, memScan, Addresses.GetAddresses.AddressType.Packet);
@@ -163,6 +166,9 @@ namespace MemoryScanner
             list.Add(Addresses.MyAddresses.PlayerX);
             list.Add(Addresses.MyAddresses.PlayerY);
             list.Add(Addresses.MyAddresses.PlayerZ);
+            list.Add(Addresses.MyAddresses.Gotox);
+            list.Add(Addresses.MyAddresses.Gotoy);
+            list.Add(Addresses.MyAddresses.Gotoz);
             list.Add(Addresses.MyAddresses.RedSqare);
             list.Add(Addresses.MyAddresses.PlayerFlags);
             list.Add(Addresses.MyAddresses.GetnextPacket);
